@@ -51,6 +51,7 @@ class MCFModuleAction //extends	CmsObject
 		catch(Exception $e)
 		{
 			print($e);
+            return null;
 		}
 	}
 	
@@ -109,8 +110,6 @@ class MCFModuleAction //extends	CmsObject
 			}
 			return false;
 		}
-		
-		return false; // Shouldn't happen. In case of, return false !
 	}
 	
 	public function getCleanCode()

@@ -1,0 +1,3 @@
+[submodule "lib/vendor/select2"]
+	path = lib/vendor/select2
+	url = git@github.com:ivaynberg/select2.git

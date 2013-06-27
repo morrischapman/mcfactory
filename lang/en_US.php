@@ -45,6 +45,9 @@ $lang = array(
 'logic' => 'Custom logic',
 'options' => 'Options',
 
+'display_error' => '<h3>Access Denied</h3>
+<p>You do not have sufficient privileges to manage this module.</p>',
+
 'help' =>'
 	<h3>Description</h3>
 	<p>This module can generate new modules to manage custom content types.</p>

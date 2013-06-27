@@ -42,4 +42,3 @@ $form->getFieldset($this->lang('import_module'))->setWidget('xmlfile', 'file');
 $this->smarty->assign('form', $form);
 echo $this->ProcessTemplate('defaultadmin.tpl');
 
-?>

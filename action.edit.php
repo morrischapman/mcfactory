@@ -338,4 +338,3 @@ $this->smarty->assign('templates_restore_url', (isset($params['module_id']))?$th
 
 echo $this->ProcessTemplate('edit.tpl');
 
-?>

@@ -43,7 +43,7 @@ class MCFactory extends CMSModule {
 	public function GetAdminDescription()  { return $this->Lang('admindescription'); }
 	public function VisibleToAdminUser()   { return $this->CheckAccess(); }
 	public function CheckAccess()          { return $this->CheckPermission('Manage MCFactory'); }
-	public function DisplayErrorPage()     {  echo $this->ProcessTemplate('error.tpl'); }
+	public function DisplayErrorPage()     { echo $this->Lang('display_error'); }
   // public function GetParameters()     { return array(); }
 	public function GetDependencies()      { return array('CMSForms' => '1.0.4'); }
 	public function InstallPostMessage()   { return $this->Lang('installpostmessage'); }
@@ -60,7 +60,7 @@ class MCFactory extends CMSModule {
 	}
 
 	public function getAttribute($name, $default = null) {
-		$db = $this->getDb();
+		$db = cms_utils::get_db();
 		$result = $db->execute('SELECT attribute_value FROM ' . cms_db_prefix() . 'module_mcfactory_attributes WHERE attribute_name = ?', array($name));
 		if ($result && ($row = $result->FetchRow())) {
 			return $row['attribute_value'];
@@ -71,7 +71,7 @@ class MCFactory extends CMSModule {
 	
 	public function DisplayImage($image,$title='')
 	{
-		$config = &$this->getConfig();
+		$config = cms_utils::get_config();
 		
 		return '<img src="'.$config['root_url'].'/modules/MCFactory/images/'.$image.'" title="'.$title.'" alt="'.$title.'" />';
 		
@@ -87,7 +87,7 @@ class MCFactory extends CMSModule {
 	}
 
 	public function setAttribute($name, $value) {
-		$db = $this->getDb();
+		$db = cms_utils::get_db();
 		$result = $db->execute('SELECT id FROM ' . cms_db_prefix() . 'module_mcfactory_attributes WHERE attribute_name = ?', array($name));
 		if ($result && ($row = $result->FetchRow())) {
 			$db->execute('UPDATE ' . cms_db_prefix() . 'module_mcfactory_attributes SET attribute_value = ? WHERE id = ?', array($value, $row['id']));
@@ -357,4 +357,3 @@ class MCFactory extends CMSModule {
 	
 }
 
-?>

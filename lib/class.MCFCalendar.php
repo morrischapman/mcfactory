@@ -132,8 +132,9 @@ class MCFCalendar
 
   public static function loadiCalLibraries()
   {
+
     $config = cms_utils::get_config();
-    $class = $config['root_path'] . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . 'MCFactory'  . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'third' . DIRECTORY_SEPARATOR . 'bennu'  . DIRECTORY_SEPARATOR . 'lib'  . DIRECTORY_SEPARATOR . 'bennu.inc.php';
+    $class = $config['root_path'] . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . 'MCFactory'  . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'bennu'  . DIRECTORY_SEPARATOR . 'lib'  . DIRECTORY_SEPARATOR . 'bennu.inc.php';
     // require_once dirname(__FILE__) . '/../bennu/lib/bennu.inc.php';
     require_once($class);
   }

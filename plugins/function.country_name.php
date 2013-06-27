@@ -6,7 +6,7 @@ function smarty_cms_function_country_name($params, &$smarty) {
 		if (isset(MCFactory::$countries[$code])) {
 			return MCFactory::$countries[$code];
 		}
+        return null;
 	}
 }
 
-?>

@@ -64,5 +64,3 @@ $db->CreateSequence(cms_db_prefix() . 'module_mcfactory_attributes_seq');
 $this->CreatePermission('Manage MCFactory', 'Manage MC Factory');
 $this->AddEventHandler('Core', 'ContentEditPost', false);
 $this->Audit(0, $this->GetName(), $this->Lang('installed', $this->GetVersion()));
-
-?>

@@ -184,19 +184,10 @@ class {{$module->getModuleName()}} extends CMSModule {
     if(is_object($mcf))
     {      
         $html .= '<link rel="stylesheet" type="text/css" href="'.$mcf->GetModuleURLPath(). '/lib/jquery/smoothness/jquery-ui-1.8.4.custom.css" />';
-        $html .= '<link rel="stylesheet" type="text/css" href="'.$mcf->GetModuleURLPath(). '/lib/jquery/select2/select2.css" />';
-        // $html .= '<script type="text/javascript" src="'.$mcf->GetModuleURLPath(). '/lib/jquery/versioncompare.jquery.js"></script>';
-        // $html .= '
-        // <script type="text/javascript">
-        //   if($.versioncompare($().jquery, \'1.6.4\'))
-        //   {
-        //     document.write(\'<script type="text/javascript" src="'.$mcf->GetModuleURLPath(). '/lib/jquery/jquery-1.8.3.min.js"><\/script>\');
-        //   }
-        // </script>
-        // ';
-        // 
-        
-        $html .= '<script type="text/javascript" src="'.$mcf->GetModuleURLPath(). '/lib/jquery/select2/select2.js"></script>';
+
+        // SELECT2
+        $html .= '<link rel="stylesheet" type="text/css" href="'.$mcf->GetModuleURLPath(). '/lib/vendor/select2/select2.css" />';
+        $html .= '<script type="text/javascript" src="'.$mcf->GetModuleURLPath(). '/lib/vendor/select2/select2.js"></script>';
         
         $html .= '
         <script type="text/javascript">

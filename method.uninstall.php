@@ -23,4 +23,3 @@ $this->RemoveEventHandler('Core', 'ContentEditPost');
 
 $this->Audit(0, $this->getFriendlyName(), $this->Lang('uninstalled'));
 
-?>
