@@ -87,10 +87,13 @@ class MCFModuleStructure {
 		$list = array();
 		foreach($this->structure['tabs'] as $tab_key => $tab)
 		{
-			foreach($tab['fieldsets'] as $fs_key => $fieldset)
-			{
-				$list[$tab_key . '---' . $fs_key] = $tab['name'] . ': ' . $fieldset['name'];				
-			}
+            if(isset($tab['fieldsets']))
+            {
+                foreach($tab['fieldsets'] as $fs_key => $fieldset)
+                {
+                    $list[$tab_key . '---' . $fs_key] = $tab['name'] . ': ' . $fieldset['name'];
+                }
+            }
 		}
 		return $list;
 	}
@@ -282,8 +285,8 @@ class MCFModuleStructure {
 	
 	public static function cleanName($name, $spacer = '-') {
 		  $result = strtolower($name);
-			// Remove accents
-      $result = strtr($result,  "�����������������������������������������������������",  "aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn");
+		  // Remove accents
+          $result = iconv('UTF-8','ASCII//TRANSLIT//IGNORE' ,$result);
 
 			// Soft way
 			$result = str_replace("#", "No.", $result); 
@@ -299,7 +302,7 @@ class MCFModuleStructure {
 			$result = str_replace(".", " ", $result);
 			
       // strip all non word chars
-      //$result = preg_replace('/\W/', ' ', $result); // HARD WAY...
+      $result = preg_replace('/((?![-a-zA-Z0-9 _]).)+/s', ' ', $result);
 
       // replace all white space sections with a dash
       $result = preg_replace('/\ +/', $spacer, $result);

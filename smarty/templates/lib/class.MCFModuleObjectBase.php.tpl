@@ -1385,7 +1385,7 @@ class {{$module->getModuleName()}}ObjectBase {
           }
           $form->setWidget('moduleFilters[{{$field.name}}]', 'select', array(
             'values' => 
-                array(0 => '&laquo; {{$field.label}} &raquo;') +
+                array('' => '&laquo; {{$field.label}} &raquo;') +
                 $items
               ,
               'label' => '',
@@ -1394,7 +1394,7 @@ class {{$module->getModuleName()}}ObjectBase {
         {{elseif $field.form_type == 'select'}}
           $form->setWidget('moduleFilters[{{$field.name}}]', 'select', array(
             'values' => 
-                array(0 => '&laquo; {{$field.label}} &raquo;') +
+                array('' => '&laquo; {{$field.label}} &raquo;') +
                 {{$module->getModuleName()}}Object::${{$field.name}}_options
               ,
               'label' => '',

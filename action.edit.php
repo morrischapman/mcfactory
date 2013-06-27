@@ -58,6 +58,7 @@ if (isset($params['module_id']) && !empty($params['module_id'])) {
 } else {
 	$module = new MCFModule();
 	$module->setParentModule(0);
+    $module->setModuleFriendlyname('Module');
 }
 
 

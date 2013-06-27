@@ -2,16 +2,6 @@
 
 $GLOBALS['ADODB_QUOTE_FIELDNAMES'] = true;
 
-{{*}}
-// if(!class_exists('{{$module->getModuleName()}}ObjectBase'))
-// {
-//   // Since 1.7...
-//   require dirname(__FILE__) . '/lib/class.{{$module->getModuleName()}}ObjectBase.php';
-//   require dirname(__FILE__) . '/lib/class.{{$module->getModuleName()}}Object.php';
-//   require dirname(__FILE__) . '/lib/class.{{$module->getModuleName()}}Views.php';
-// }
-{{*}}
-
 class {{$module->getModuleName()}} extends CMSModule {
 {{* TODO class {{$module->getModuleName()}} extends {{$module->getModuleName()}}Base { *}}
 
@@ -219,10 +209,12 @@ class {{$module->getModuleName()}} extends CMSModule {
 		$this->RegisterParameters();
   }
 
+
 	private function RegisterParameters()
 	{
-		$this->RestrictUnknownParams(false);
-		// TODO: Set all parameters type
+        // NOTICE: Due to the dynamic behind MCFactory, it is not possible to clean parameters properly. Although it is not possible to have the admin logs full of alert. For the moment, this is the only alternative.
+		$this->RestrictUnknownParams(true);
+        $this->SetParameterType(CLEAN_REGEXP . '[-a-zA-Z0-9_]?',CLEAN_NONE);
 	}
 	
   function createLink($id, $action, $returnid='', $contents='', $params=array(), $warn_message='', $onlyhref=false, $inline=false, $addttext='', $targetcontentonly=false, $prettyurl='',  $withslash = false) {

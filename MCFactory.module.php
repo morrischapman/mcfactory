@@ -34,7 +34,7 @@ class MCFactory extends CMSModule {
 	
 	public function GetName()              { return 'MCFactory'; }
 	public function GetFriendlyName()      { return 'M&C Factory'; }
-	public function GetVersion()           { return '3.4.15'; }
+	public function GetVersion()           { return '3.4.18'; }
 	public function GetAuthor()            { return 'Jean-Christophe Cuvelier'; }
 	public function GetAuthorEmail()       { return 'jcc@morris-chapman.com'; }
 	public function GetHelp()              { return $this->Lang('help'); }
@@ -52,6 +52,13 @@ class MCFactory extends CMSModule {
 	public function HandlesEvents()        { return true; }
 	public function MinimumCMSVersion()    { return '1.9';  }
 
+
+    function InitializeFrontend()
+    {
+        // NOTICE: Due to the dynamic behind MCFactory, it is not possible to clean parameters properly. Although it is not possible to have the admin logs full of alert. For the moment, this is the only alternative.
+        $this->RestrictUnknownParams(true);
+        $this->SetParameterType(CLEAN_REGEXP . '[-a-zA-Z0-9_]?',CLEAN_NONE);
+    }
 
 	public function DoEvent($originator, $eventname, &$params) {
 		if ($eventname == 'ContentEditPost') {
@@ -80,9 +87,6 @@ class MCFactory extends CMSModule {
 	
 	public function getImage($image)
 	{
-    // $config = &$this->getConfig();
-    // return $config['root_url'] . '/modules/MCFactory/images/' . $image;
-		
 		return $this->GetModuleURLPath() . '/images/' . $image;
 	}
 
