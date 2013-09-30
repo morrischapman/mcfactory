@@ -56,5 +56,3 @@ if (isset($params['var'])) {
     // }
 *}}
 }
-
-?>

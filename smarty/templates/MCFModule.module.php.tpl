@@ -214,7 +214,7 @@ class {{$module->getModuleName()}} extends CMSModule {
 	{
         // NOTICE: Due to the dynamic behind MCFactory, it is not possible to clean parameters properly. Although it is not possible to have the admin logs full of alert. For the moment, this is the only alternative.
 		$this->RestrictUnknownParams(true);
-        $this->SetParameterType(CLEAN_REGEXP . '[-a-zA-Z0-9_]?',CLEAN_NONE);
+        $this->SetParameterType(CLEAN_REGEXP . '/[-a-zA-Z0-9_]*/',CLEAN_NONE);
 	}
 	
   function createLink($id, $action, $returnid='', $contents='', $params=array(), $warn_message='', $onlyhref=false, $inline=false, $addttext='', $targetcontentonly=false, $prettyurl='',  $withslash = false) {

@@ -167,6 +167,10 @@ class {{$module->getModuleName()}}ObjectBase {
     return $this->parent_item;
   }
 
+  public function getParentItemObject() {
+    return {{$module->getModuleName()}}Object::doSelectOne(array('where' => array('id' => $this->parent_item)));
+  }
+
   public function getPublished() {
     return $this->published;
   }
@@ -1001,11 +1005,15 @@ class {{$module->getModuleName()}}ObjectBase {
     return self::buildObjects($result);
   }
 
+  /**
+    @return {{$module->getModuleName()}}Object
+    */
+
   public static function doSelectOne(MCFCriteria $crit) {
     $c = clone $crit;
     $c->setLimit(1);
     $objects = self::doSelect($c);
-    return (count($objects) > 0) ? array_shift($objects) : false;
+    return current($objects);
   }
 
   public static function getById($id) {
@@ -1670,13 +1678,13 @@ class {{$module->getModuleName()}}ObjectBase {
     {{foreach from=$filters item=filter}}
     if (isset($params['{{$filter.name}}']) && $params['{{$filter.name}}'] != '') {
       {{if in_array($filter.type, array('less', 'less_equal', 'greater', 'greater_equal'))}}
-        $c->add('{{$filter.field}}', self::cleanFilterValue('{{$filter.field}}', $params['{{$filter.name}}']), MCFCriteria::{{$filter.criteria}});
+        $c->add('{{$filter.field}}', {{$module->getModuleName()}}Object::cleanFilterValue('{{$filter.field}}', $params['{{$filter.name}}']), MCFCriteria::{{$filter.criteria}});
       {{elseif  in_array($filter.type, array('like_wild'))}}
-        $c->add('{{$filter.field}}', '%' . self::cleanFilterValue('{{$filter.field}}', $params['{{$filter.name}}']) . '%', MCFCriteria::{{$filter.criteria}});
+        $c->add('{{$filter.field}}', '%' . {{$module->getModuleName()}}Object::cleanFilterValue('{{$filter.field}}', $params['{{$filter.name}}']) . '%', MCFCriteria::{{$filter.criteria}});
       {{elseif  in_array($filter.type, array('in'))}}
-        $c->add('{{$filter.field}}', explode(',',self::cleanFilterValue('{{$filter.field}}', $params['{{$filter.name}}'])), MCFCriteria::{{$filter.criteria}});
+        $c->add('{{$filter.field}}', explode(',',{{$module->getModuleName()}}Object::cleanFilterValue('{{$filter.field}}', $params['{{$filter.name}}'])), MCFCriteria::{{$filter.criteria}});
       {{else}}
-        $c->add('{{$filter.field}}', self::cleanFilterValue('{{$filter.field}}', $params['{{$filter.name}}']), MCFCriteria::{{$filter.criteria}});
+        $c->add('{{$filter.field}}', {{$module->getModuleName()}}Object::cleanFilterValue('{{$filter.field}}', $params['{{$filter.name}}']), MCFCriteria::{{$filter.criteria}});
       {{/if}}
     }
     {{/foreach}}

@@ -34,7 +34,7 @@ class MCFactory extends CMSModule {
 	
 	public function GetName()              { return 'MCFactory'; }
 	public function GetFriendlyName()      { return 'M&C Factory'; }
-	public function GetVersion()           { return '3.4.18'; }
+	public function GetVersion()           { return '3.4.22'; }
 	public function GetAuthor()            { return 'Jean-Christophe Cuvelier'; }
 	public function GetAuthorEmail()       { return 'jcc@morris-chapman.com'; }
 	public function GetHelp()              { return $this->Lang('help'); }
@@ -56,8 +56,9 @@ class MCFactory extends CMSModule {
     function InitializeFrontend()
     {
         // NOTICE: Due to the dynamic behind MCFactory, it is not possible to clean parameters properly. Although it is not possible to have the admin logs full of alert. For the moment, this is the only alternative.
-        $this->RestrictUnknownParams(true);
-        $this->SetParameterType(CLEAN_REGEXP . '[-a-zA-Z0-9_]?',CLEAN_NONE);
+        // TODO: NOT WORKING !!!
+         $this->RestrictUnknownParams(true);
+         $this->SetParameterType(CLEAN_REGEXP . '/[-a-zA-Z0-9_]*/',CLEAN_NONE);
     }
 
 	public function DoEvent($originator, $eventname, &$params) {

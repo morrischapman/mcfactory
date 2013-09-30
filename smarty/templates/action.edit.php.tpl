@@ -61,7 +61,7 @@ $form->setWidget('parent_item', 'hidden', array('object' => &$item));
 {{/if}}
 
 // Custom part
-$config =& $this->getConfig();
+$config = cms_utils::get_config();
 
 {{$module->getModuleName()}}Views::createForm($this,$form,$item);
 
