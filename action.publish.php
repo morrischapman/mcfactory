@@ -14,10 +14,13 @@ if (isset($params['module_id']) && !empty($params['module_id']))
 		$module->forceUpdate();
 		if ($module->publish())
 		{
+            $this->SetFlashMessage('Module ' . $module->getModuleName() . ' published!');
+            cmsms()->clear_cached_files(-1); // FORCE CLEAR CACHE
 			$this->Redirect($id, 'defaultadmin', $returnid);
 		}		
 		else
 		{
+            $this->SetFlashMessage('Module path unwritable! Check permissions!', 'error');
 			echo '<h3 style="color:red">Module path unwritable! Check permissions!</h3>';
 		}
 	}

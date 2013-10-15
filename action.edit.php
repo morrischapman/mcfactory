@@ -1,5 +1,6 @@
 <?php
 if (!cmsms()) exit;
+/** @var $this MCFactory */
 
 if (!$this->CheckAccess()) {
 	return $this->DisplayErrorPage();
@@ -119,12 +120,16 @@ if (isset($params['publish']) || isset($params['save']) ) {
 	{
 		if ($module->publish())
 		{
+          $this->SetFlashMessage('Module ' . $module->getModuleName() . ' published!');
 		  echo '<h3 style="color:green">Module published!</h3>';
-      $this->Redirect($id, 'edit', $returnid, array('module_id' => $module->getId()));
-			exit;	
+
+          cmsms()->clear_cached_files(-1); // FORCE CLEAR CACHE
+
+          return $this->Redirect($id, 'edit', $returnid, array('module_id' => $module->getId()));
 		}	
 		else
 		{
+            $this->SetFlashMessage('Module path unwritable! Check permissions!', 'error');
 			echo '<h3 style="color:red">Module path unwritable! Check permissions!</h3>';
 		}
 	}
@@ -187,6 +192,14 @@ $this->smarty->assign('input_show_module', $this->CreateInputCheckbox($id, 'show
 $this->smarty->assign('input_is_user_module', $this->CreateInputCheckbox($id, 'is_user_module', '1', $module->getIsUserModule()));
 
 $this->smarty->assign('input_api_enabled', $this->CreateInputCheckbox($id, 'api_enabled', '1', $module->getAPIEnabled()));
+
+if($mod_instance = cms_utils::get_module($module->getModuleName()))
+{
+    $this->smarty->assign('api_url', $mod_instance->createLink($id, 'api', $returnid, $contents='', array(), '', true, false, '', false, strtolower($module->getModuleName()) . '/api/list'));
+
+//    echo '<div><p>' . $this->CreateLink($id, 'default', $returnid, 'Run cron', array(), $this->Lang('areyousure'),false,false,'',false,'cron/' . $id) . '</p></div>';
+}
+
 
 $this->smarty->assign('input_is_protected', $this->CreateInputCheckbox($id, 'is_protected', '1', $module->getIsProtected()));
 $this->smarty->assign('input_files_path', $this->CreateInputText($id, 'files_path', $module->getFilesPath(), 50));

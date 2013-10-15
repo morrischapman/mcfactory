@@ -34,7 +34,7 @@ class MCFactory extends CMSModule {
 	
 	public function GetName()              { return 'MCFactory'; }
 	public function GetFriendlyName()      { return 'M&C Factory'; }
-	public function GetVersion()           { return '3.4.22'; }
+	public function GetVersion()           { return '3.4.23'; }
 	public function GetAuthor()            { return 'Jean-Christophe Cuvelier'; }
 	public function GetAuthorEmail()       { return 'jcc@morris-chapman.com'; }
 	public function GetHelp()              { return $this->Lang('help'); }
@@ -102,6 +102,9 @@ class MCFactory extends CMSModule {
 	}
 
 	public function GetHeaderHTML() {
+
+        $this->ShowMessages();
+
 		$html = '';
 		$html .= '<link rel="stylesheet" type="text/css" href="'. $this->GetModuleURLPath() . '/lib/jquery/smoothness/jquery-ui-1.8.4.custom.css" />';
 			// $html  = '<script type="text/javascript" src="' . $this->config['root_url'] . '/modules/MCFactory/js/jquery-1.3.2.min.js"></script>';
@@ -110,8 +113,63 @@ class MCFactory extends CMSModule {
 			// Seems useless
 			//	$html .= '<script type="text/javascript" src="' . $this->config['root_url'] . '/modules/TinyMCE/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>';
 			//	$html .= '<script type="text/javascript" src="' . $this->config['root_url'] . '/tmp/tinyconfig.js"></script>';
-			return $html;
-		}
+
+		return $html;
+    }
+
+    /**
+     * Display Flash messages from the module
+     */
+
+    public function ShowMessages()
+    {
+        $messages = $this->GetFlashMessages();
+
+        if(count($messages))
+        {
+            /** @var AdminTheme $themeObject */
+            $themeObject = cms_utils::get_theme_object();
+
+            foreach($messages as $type => $msgs)
+            {
+                foreach($msgs as $message)
+                {
+                    switch($type)
+                    {
+                        case 'error':
+                            $themeObject->ShowErrors($message);
+                            break;
+                        default:
+                            $themeObject->ShowMessage($message);
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Store messages for the next display
+     * @param $message The message to store for next display
+     * @param string $type alert, info
+     */
+
+    public function SetFlashMessage($message, $type = 'info')
+    {
+        $_SESSION['CMSMS']['Modules'][$this->GetName()]['Messages'][$type][] = $message;
+    }
+
+    /**
+     * Return the messages for the current display and clear it
+     * @return array
+     */
+
+    public function GetFlashMessages()
+    {
+        $messages = $_SESSION['CMSMS']['Modules'][$this->GetName()]['Messages'];
+        unset($_SESSION['CMSMS']['Modules'][$this->GetName()]['Messages']);
+        return $messages;
+    }
 	
 	static $countries = array(
 		'AD' => 'Andorra',

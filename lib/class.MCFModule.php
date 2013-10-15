@@ -1268,7 +1268,8 @@ class MCFModule {
 		if ($this->publishing_status === false)
 		{
 			return false;
-		}	
+		}
+
 		return true;
 	}
 

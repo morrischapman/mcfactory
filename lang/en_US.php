@@ -1,54 +1,54 @@
 <?php
 $lang = array(
-'installed' =>'Module version %s installed.',
-'upgraded' =>'Module upgraded to version %s.',
-'uninstalled' =>'Module uninstalled.',
+    'installed' => 'Module version %s installed.',
+    'upgraded' => 'Module upgraded to version %s.',
+    'uninstalled' => 'Module uninstalled.',
 
-'admindescription' =>'A module to generate modules for custom content types.',
-'installpostmessage' =>'M&amp;C Factory was successfully installed. You can access it and generate new modules through the Extensions menu.',
-'uninstallpremessage' =>'Are you sure you want to uninstall MC Factory? This will also remove all settings for generated modules.',
-'uninstallpostmessage' =>'M&amp;C Factory was successfully uninstalled. You can reinstall it at any time.',
-'error_occured_publishing' =>'An error occurred during the publication of the module',
+    'admindescription' => 'A module to generate modules for custom content types.',
+    'installpostmessage' => 'M&amp;C Factory was successfully installed. You can access it and generate new modules through the Extensions menu.',
+    'uninstallpremessage' => 'Are you sure you want to uninstall MC Factory? This will also remove all settings for generated modules.',
+    'uninstallpostmessage' => 'M&amp;C Factory was successfully uninstalled. You can reinstall it at any time.',
+    'error_occured_publishing' => 'An error occurred during the publication of the module',
 
-'edit' =>'Edit',
-'delete' =>'Delete',
-'move_up' =>'Move up',
-'move_down' =>'Move down',
+    'edit' => 'Edit',
+    'delete' => 'Delete',
+    'move_up' => 'Move up',
+    'move_down' => 'Move down',
 
-'import' => 'Import',
-'import_module' => 'Import module',
-'form_module_name' => 'Module name',
-'leave_empty' => 'You can leave this empty',
-'form_xmlfile' => 'Module XML File',
+    'import' => 'Import',
+    'import_module' => 'Import module',
+    'form_module_name' => 'Module name',
+    'leave_empty' => 'You can leave this empty',
+    'form_xmlfile' => 'Module XML File',
 
-'form_name' => 'Name',
-'form_code' => 'Code',
-'form_event_name' => 'Event name',
-'form_is_public' => 'Is a public action',
-'form_have_permission' => 'Have a specific permission',
-'form_button' => 'Place a button in the admin panel',
-'form_button_name' => 'Button name',
+    'form_name' => 'Name',
+    'form_code' => 'Code',
+    'form_event_name' => 'Event name',
+    'form_is_public' => 'Is a public action',
+    'form_have_permission' => 'Have a specific permission',
+    'form_button' => 'Place a button in the admin panel',
+    'form_button_name' => 'Button name',
 
-'form_label' => 'Label',
-'form_type' => 'Type',
-'form_type_select' => 'Type',
-'form_place' => 'Place',
-'form_options' => 'Options',
-'form_column' => 'Show in column',
-'form_filter' => 'Filter',
-'form_frontend' => 'Usable in frontend',
+    'form_label' => 'Label',
+    'form_type' => 'Type',
+    'form_type_select' => 'Type',
+    'form_place' => 'Place',
+    'form_options' => 'Options',
+    'form_column' => 'Show in column',
+    'form_filter' => 'Filter',
+    'form_frontend' => 'Usable in frontend',
 
-'main' => 'Main',
-'fields' => 'Fields',
-'actions' => 'Actions',
-'extra_features' => 'Extra features',
-'logic' => 'Custom logic',
-'options' => 'Options',
+    'main' => 'Main',
+    'fields' => 'Fields',
+    'actions' => 'Actions',
+    'extra_features' => 'Extra features',
+    'logic' => 'Custom logic',
+    'options' => 'Options',
 
-'display_error' => '<h3>Access Denied</h3>
+    'display_error' => '<h3>Access Denied</h3>
 <p>You do not have sufficient privileges to manage this module.</p>',
 
-'help' =>'
+    'help' => '
 	<h3>Description</h3>
 	<p>This module can generate new modules to manage custom content types.</p>
 	<h3>How to use it</h3>
@@ -63,6 +63,12 @@ $lang = array(
 	<ul>
 		<li><strong>tips</strong> Add a tip in the end of the field.</li>
 	</ul>
+	<h4>Checkbox</h4>
+	<ul>
+	    <li><strong>text</strong> Checkbox text</li>
+	    <li><strong>checked</strong> Check the checkbox by default</li>
+	</ul>
+
 	<h4>Select (Dropdown)</h4>
 	<ul>
 		<li><strong>values</strong> A list of values for the dropdown. You can use key=>value (ex: values:option1 => Option 1, option2 => Option 2). To retrieve the value, use getMyFieldNameValue()</li>
@@ -106,7 +112,7 @@ $lang = array(
 	<p>This module has been released under the <a href="http://www.gnu.org/licenses/licenses.html#GPL">GNU Public License</a>. You must agree to this license before using this module.</p>
 ',
 
-'changelog' =>'
+    'changelog' => '
 	<dl>
 		<dt>Version 0.0.1 - 29 September 2008.</dt>
 		<dd>Initial Release.</dd>

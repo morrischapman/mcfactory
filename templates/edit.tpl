@@ -201,26 +201,26 @@
 
 <div class="pageoverflow2">
   <p class="pagetext2">Show module:</p>
-  <p class="pageinput2">{$input_show_module}</p>
+  <p class="pageinput2"><label>{$input_show_module} Show the module in the admin?</label></p>
 </div>
 
 <div class="pageoverflow2">
-  <p class="pagetext2">API Enabled:</p>
-  <p class="pageinput2">{$input_api_enabled}</p>
+  <p class="pagetext2">API: {if isset($api_url)} (<em><a href="{$api_url}">{$api_url}</a></em>){/if}</p>
+  <p class="pageinput2"><label>{$input_api_enabled} Enable API access</label></p>
 </div>
 
 <div class="pageoverflow2">
-  <p class="pagetext2">Is user module:</p>
-  <p class="pageinput2">{$input_is_user_module}</p>
+  <p class="pagetext2">User's module:</p>
+  <p class="pageinput2"><label>{$input_is_user_module} can the user add it's own entries?</label></p>
 </div>
 
 <div class="pageoverflow2">
   <p class="pagetext2">Protect files:</p>
-  <p class="pageinput2">{$input_is_protected}</p>
+  <p class="pageinput2"><label>{$input_is_protected} Should the files uploaded be stored in a protected folder?</label></p>
 </div>
 
 <div class="pageoverflow2">
-  <p class="pagetext2">File storage path (server path):</p>
+  <p class="pagetext2">File storage path (server path) in case of protected files:</p>
   <p class="pageinput2">{$input_files_path}</p>
 </div>
 
@@ -230,6 +230,7 @@
 			<p><input type="button" id="templates_restore" value="Restore templates" onClick="return parent.location='{$templates_restore_url}'" /></p>
 		</div>
 </div>
+<hr />
 <div class="pageoverflow2">
 	<p class="pagetext2">Created by:</p>
 	<p class="pageinput2">{$created_by} on {$created_at}</p>

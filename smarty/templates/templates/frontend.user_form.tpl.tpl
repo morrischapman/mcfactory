@@ -5,6 +5,11 @@
 		<div class="pagetext">%LABEL%:</div>
 		<div class="pageinput">%INPUT%</div>
 	</div>')}
+    {$form->renderFieldsets('<div class="pageoverflow">
+		<div class="pagetext">%LABEL%:</div>
+		<div class="pageinput">%INPUT% <em>%TIPS%</em></div>
+		<div class="pageinput" style="color: red;">%ERRORS%</div>
+	</div>')}
 	<p style="margin-top: 15px;">
 		{$form->getButtons()}
 	</p>

@@ -94,8 +94,9 @@ if (is_object(cms_utils::get_module('CMSUsers'))) // Only work with CMSUsers for
 		$form->setWidget('goback', 'hidden',array('value' =>  'true'));
 		$form->setWidget('redirect_url', 'hidden',array('value' =>  'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']));
 	}
-	
-	
+
+$params['frontend'] = true;
+
 {{$module->getModuleName()}}Views::createForm($this,&$form,&$item,$params);
 
 //var_dump($params);

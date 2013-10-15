@@ -324,6 +324,7 @@ public static function createForm($module,&$form,&$item,$params=array())
       'multiple' => true,
       'expanded' => true
       {{if isset($field.foptions.tips)}}, 'tips' => '{{$field.foptions.tips}}'{{/if}}
+      {{if isset($field.foptions.checked)}}, 'default_value' => '1'{{/if}}
     ));
   	{{elseif $field.form_type == 'textarea'}}
   	$form->getFieldset('{{$field.place.tab_key}}---{{$field.place.fieldset_key}}')->setWidget('{{$field.name}}', 'textarea', array(
