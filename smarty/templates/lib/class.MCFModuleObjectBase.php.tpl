@@ -242,8 +242,11 @@ class {{$module->getModuleName()}}ObjectBase {
 
   {{foreach from=$extra_fields item=field}}
 
-  public function get{{$field.camelcase}}($parse = null) {
-    if(is_null($parse)) $parse = {{if $field.type == 'textarea'}}true{{else}}false{{/if}};
+
+  /**
+    * @param bool $parse
+    */
+  public function get{{$field.camelcase}}($parse = {{if $field.type == 'textarea'}}true{{else}}false{{/if}}) {
     if ($parse) {
       return cms_module_ProcessTemplateFromData(new stdClass(), $this->{{$field.name}});
     }
