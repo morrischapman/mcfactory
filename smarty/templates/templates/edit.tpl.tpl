@@ -17,7 +17,7 @@
 	<div id="structure" style="margin-bottom: 7px;">
 	<ul>
 		{{foreach from=$structure->getTabs() item=tab key=tab_key}}
-		<li{{if $active_fields_tab eq $tab_key}} class="ui-tabs-selected ui-state-active"{{/if}}><a href="#struc-{{$tab_key}}">{{$tab.name}}</a></li>
+		<li{{if isset($active_fields_tab)}}{{if $active_fields_tab eq $tab_key}} class="ui-tabs-selected ui-state-active"{{/if}}{{/if}}><a href="#struc-{{$tab_key}}">{{$tab.name}}</a></li>
 		{{/foreach}}
 		{foreach from=$submodules item=module}
 		<li{if $tab == $module.gname} class="ui-tabs-selected ui-state-active"{/if}><a href="#struc-{$module.gname}">{$module.name}</a></li>

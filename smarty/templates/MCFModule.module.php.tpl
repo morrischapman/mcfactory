@@ -18,6 +18,8 @@ class {{$module->getModuleName()}} extends CMSModule {
       'direct_email'   => 'direct_email'
     );
 
+  const MODULE_OBJECT_NAME = '{{$module->getModuleName()}}Object';
+
   public function DoAction($name, $id, $params, $returnid = '') {
     $methods = get_class_methods($this);
     foreach ($methods as $method) {
