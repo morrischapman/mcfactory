@@ -28,8 +28,8 @@ foreach ($modules as $module) {
 }
 
 $this->smarty->assign('rows', $rows);
-$this->smarty->assign('add', $this->CreateLink($id, 'edit', '', 'Create new module'));
-$this->smarty->assign('add_icon', $this->CreateLink($id, 'edit', '', $this->DisplayImage('application_add.png', $this->Lang('title_create_module'))));
+$this->smarty->assign('add', $this->CreateLink($id, 'module_wizard', '', 'Create new module'));
+$this->smarty->assign('add_icon', $this->CreateLink($id, 'module_wizard', '', $this->DisplayImage('application_add.png', $this->Lang('title_create_module'))));
 
 $form = new CMSForm($this->GetName(), $id, 'module_import',$returnid);
 $form->setButtons(array('submit'));

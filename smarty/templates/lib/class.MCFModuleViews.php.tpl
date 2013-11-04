@@ -45,7 +45,7 @@ public static function adminItems($module,$id,$returnid,$view,$items,$parent_id=
 		$rows[$item->getId()] = array(
 		  'id' => $item->getId(),
 		  'parent_id' => $item->getParentId(),
-			'titlelink' => $module->CreateLink($id, 'edit', $returnid, $item->getTitle(), array('view' => $view->getView(), 'item_id' => $item->getId()), '', false, false, 'class="itemlink"'),
+			'titlelink' => $module->CreateLink($id, 'edit', $returnid, (string)$item, array('view' => $view->getView(), 'item_id' => $item->getId()), '', false, false, 'class="itemlink"'),
 			'publishlink' => $module->CreateLink($id, 'publish', $returnid, cmsms()->get_variable('admintheme')->DisplayImage(($item->getPublished() ? 'icons/system/true.gif' : 'icons/system/false.gif'), ($item->getPublished() ? $module->Lang('unpublish') : $module->Lang('publish')), '', '', 'systemicon'), array('view' => $view->getView(), 'item_id' => $item->getId())),
 			'deletelink' => $module->CreateLink($id, 'delete', $returnid, cmsms()->get_variable('admintheme')->DisplayImage('icons/system/delete.gif', $module->Lang('delete'), '', '', 'systemicon'), array('view' => $view->getView(), 'item_id' => $item->getId()), 'Are you sure you want to delete this entry?'),
 			'editlink' => $module->CreateLink($id, 'edit', $returnid, cmsms()->get_variable('admintheme')->DisplayImage('icons/system/edit.gif', $item->getTitle(), '', '', 'systemicon'), array('view' => $view->getView(), 'item_id' => $item->getId())),
