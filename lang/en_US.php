@@ -38,6 +38,8 @@ $lang = array(
     'form_filter' => 'Filter',
     'form_frontend' => 'Usable in frontend',
 
+    'Continue' => 'Continue',
+
     'main' => 'Main',
     'fields' => 'Fields',
     'actions' => 'Actions',
