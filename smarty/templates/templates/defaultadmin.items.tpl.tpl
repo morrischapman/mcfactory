@@ -1,13 +1,16 @@
 {if isset($filters_form)}
+    <div style="border: 1px solid #eee;">
 	{$filters_form->getHeaders()}
 	Filter by:
 	{$filters_form->showWidgets('%LABEL% %INPUT% ')}
 		{$filters_form->getButtons()}
 	{$filters_form->getFooters()}
+    </div>
 {/if}
 {$filters_buttons}
 <div style="float:right;">{if $items_top != ''}<div style="margin-bottom: 15px;">{$items_top} </div>{/if} (<strong>{$total_items} item{if $total_items gt 1}s{/if}</strong>) </div>
 <div style="clear: both;"></div>
+
 {if $rows|@count}
 	{if isset($add_item_icon)}
 	<div class="pageoptions">
@@ -15,6 +18,7 @@
 	</div>
 	{/if}
 {/if}
+
     <table cellspacing="0" class="pagetable" id="treetable">
         <thead>
             <tr>
