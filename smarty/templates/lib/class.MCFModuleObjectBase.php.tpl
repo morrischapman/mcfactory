@@ -2,22 +2,14 @@
 $config = cms_utils::get_config();
 require_once(cms_join_path($config['root_path'], 'lib', 'classes', 'module_support', 'modtemplates.inc.php'));
 
-class {{$module->getModuleName()}}ObjectBase {
+class {{$module->getModuleName()}}ObjectBase extends MCFModuleObject {
 
-  protected $id;
-  protected $user_id;
-  protected $created_at;
-  protected $created_by;
-  protected $updated_at;
-  protected $updated_by;
-  protected $mcfi_created_timestamp;
-  protected $mcfi_updated_timestamp;
-  protected $vars = array();
-  protected $is_modified = false;
   protected $childrens;
-	protected $level;
+  protected $level;
 
   const MODULE_NAME = '{{$module->getModuleName()}}';
+  const MODULE_OBJECT_NAME = '{{$module->getModuleName()}}Object';
+
   const DB_NAME = 'module_{{$table_name}}';
   const DB_ITEM = '{{$table_name}}';
   const UPLOADS_RELATIVE_URL = '/uploads/Modules/{{$module->getModuleName()}}';
@@ -34,92 +26,29 @@ class {{$module->getModuleName()}}ObjectBase {
   
   {{/foreach}}
 
-  public function __set($var, $val) {
-    $this->is_modified = true;
-    $this->vars[$var] = $val;
-  }
 
-  public function __get($var) {
-    try
-    {
-      if(method_exists($this, $var))
-      {
-        return $this->$var();
-      }
-      elseif (array_key_exists($var, $this->vars))
-      {
-        return $this->vars[$var];
-      }
-      else 
-      {
-        //throw new Exception("Property $var does not exist");
-      }
-    }
-    catch(Exception $e)
-    {
-      echo 'Error: ',  $e->getMessage(), "\n";
-    }
-  }
-
+  /**
+   * @param $name
+   * @param $value
+   * @deprecated
+   */
   public function set($name, $value) {
     if ($this->$name != $value) {
       $this->__set($name, $value);
     }
   }
 
+  /**
+   * @param $name
+   * @return mixed
+   * @deprecated
+   */
   public function get($name) {
     // DEPRECATED
     return $this->__get($name);
   }
 
-  public function __toString()  {
-    return (string)$this->title;
-  }
 
-  public function getId() {
-    return $this->id;
-  }
-
-  public function setId($value) {
-    $this->is_modified = true;
-    $this->id = $value;
-  }
-
-  public function getUserId() {
-    return $this->user_id;
-  }
-
-  public function setUserId($value) {
-    $this->is_modified = true;
-    $this->user_id = $value;
-  }
-
-  public function getUser() {
-    return CMSUser::retrieveByPk($this->user_id);
-  }
-  
-  public function setUser(CMSUser $user)
-  {
-    $this->setUserId($user->getId());
-  }
-
-  public function getMcfiCreatedTimestamp() {
-    return $this->mcfi_created_timestamp;
-  }
-
-  public function setMcfiCreatedTimestamp($value) {
-    $this->is_modified = true;
-    $this->mcfi_created_timestamp = $value;
-  }
-
-  public function getMcfiUpdatedTimestamp() {
-    return $this->mcfi_updated_timestamp;
-  }
-
-  public function setMcfiUpdatedTimestamp($value) {
-    $this->is_modified = true;
-    $this->mcfi_updated_timestamp = $value;
-  }
 
   public function full_text_search()  {
     $text = $this->title;
@@ -132,7 +61,12 @@ class {{$module->getModuleName()}}ObjectBase {
   }
 
   // OLD WAY
-	
+    {{* TODO: Make it dynamic *}}
+  public function __toString()
+    {
+        return (string)$this->title;
+    }
+
 	// Parent ID is the parent ID of the same module
   public function getParentId() {
     return $this->parent_id;
@@ -230,11 +164,11 @@ class {{$module->getModuleName()}}ObjectBase {
     $user = self::doSelectOne($c);
     if ($user)
     {
-      return cms_utils::get_module('{{$module->getModuleName()}}')->CreateLink($id,'edit','','',array('item_id' => $user->getId()),'',true,false,'',false);
+      return cms_utils::get_module(self::MODULE_NAME)->CreateLink($id,'edit','','',array('item_id' => $user->getId()),'',true,false,'',false);
     }
     else
     {
-      return cms_utils::get_module('{{$module->getModuleName()}}')->CreateLink($id,'edit','','',array('user_id' => $user_id),'',true,false,'',false);
+      return cms_utils::get_module(self::MODULE_NAME)->CreateLink($id,'edit','','',array('user_id' => $user_id),'',true,false,'',false);
     }
   }
   {{/if}}
@@ -320,6 +254,10 @@ class {{$module->getModuleName()}}ObjectBase {
       }
       return $items;
     }
+    public function get{{$field.camelcase}}Value($concanator = null)
+    {
+        return implode($concanator, $this->get{{$field.camelcase}}Values());
+    }
     {{else}}
     public function get{{$field.camelcase}}Value()  {
       $values =  self::${{$field.name}}_options;
@@ -345,7 +283,7 @@ class {{$module->getModuleName()}}ObjectBase {
       return (string)CMSGroup::retrieveByPk($this->{{$field.name}});
     }
     {{/if}}
-  {{/if}}  
+  {{/if}}
 
   {{if $field.form_type == 'user'}}
     {{if isset($field.foptions.multiple)}}
@@ -367,9 +305,9 @@ class {{$module->getModuleName()}}ObjectBase {
       $c->add('{{$field.name}}', $user_id);
       $user = self::doSelectOne($c);
       if ($user)  {
-        return cms_utils::get_module('{{$module->getModuleName()}}')->CreateLink($id,'edit','','',array('item_id' => $user->getId()),'',true,false,'',false);
+        return cms_utils::get_module(self::MODULE_NAME)->CreateLink($id,'edit','','',array('item_id' => $user->getId()),'',true,false,'',false);
       } else {
-        return cms_utils::get_module('{{$module->getModuleName()}}')->CreateLink($id,'edit','','',array('{{$field.name}}' => $user_id),'',true,false,'',false);
+        return cms_utils::get_module(self::MODULE_NAME)->CreateLink($id,'edit','','',array('{{$field.name}}' => $user_id),'',true,false,'',false);
       }
     }
     {{/if}}
@@ -377,12 +315,12 @@ class {{$module->getModuleName()}}ObjectBase {
 
   {{if $field.form_type == 'file'}}
     public function get{{$field.camelcase}}Size($readable = true) {
-      $file = self::getFilesPath() .DIRECTORY_SEPARATOR . $this->{{$field.name}};        
+      $file = self::getFilesPath() .DIRECTORY_SEPARATOR . $this->{{$field.name}};
       return MCFTools::getFileSize($file, $readable);
     }
 
     public function get{{$field.camelcase}}Icon($icon_type = 'small') {
-      $file = self::getFilesPath() .DIRECTORY_SEPARATOR . $this->{{$field.name}};        
+      $file = self::getFilesPath() .DIRECTORY_SEPARATOR . $this->{{$field.name}};
       return MCFTools::getFileIcon($file, $icon_type);
     }
 
@@ -405,7 +343,7 @@ class {{$module->getModuleName()}}ObjectBase {
         $id = self::retrieveContextId();
       }
       $prettyurl = '{{$module->getModuleName()|lower}}/download/'.$this->getId().'/{{$field.name}}/'.self::retrieveFilename($this->get{{$field.camelcase}}());
-      return cms_utils::get_module('{{$module->getModuleName()}}')->CreateLink($id,'download','','',array('item_id' => $this->getId(), 'field' => '{{$field.name}}'),'',true,false,'',false,$prettyurl);
+      return cms_utils::get_module(self::MODULE_NAME)->CreateLink($id,'download','','',array('item_id' => $this->getId(), 'field' => '{{$field.name}}'),'',true,false,'',false,$prettyurl);
     }
 
     public function get{{$field.camelcase}}CleanUrl() {
@@ -413,7 +351,7 @@ class {{$module->getModuleName()}}ObjectBase {
         return $this->get{{$field.camelcase}}Url();
       {{else}}
         return str_replace(DIRECTORY_SEPARATOR, '/', $this->{{$field.name}});
-      {{/if}}    
+      {{/if}}
     }
 
     {{if ($field.type == 'image') && $field.image_width && $field.image_height}}
@@ -468,7 +406,7 @@ class {{$module->getModuleName()}}ObjectBase {
           {{if ($field.type == 'image') && $field.image_width && $field.image_height}}
             $file = $this->createResizedImageFor{{$field.camelcase}}($filename);
           {{/if}}
-        }    
+        }
 
         // $this->delete{{$field.camelcase}}();
         $this->set{{$field.camelcase}}($file);
@@ -478,12 +416,12 @@ class {{$module->getModuleName()}}ObjectBase {
     public function download{{$field.camelcase}}()  {
       $file = self::getFilesPath() . str_replace('/', DIRECTORY_SEPARATOR, $this->get{{$field.camelcase}}());
       if(is_file($file))  {
-        //$pathinfo = pathinfo($file);      
+        //$pathinfo = pathinfo($file);
         header("Content-Length: ".filesize($file));
         header('Content-type: ' . self::getMimeType($file));
         header('Content-Disposition: inline; filename="' . self::retrieveFilename($this->get{{$field.camelcase}}()) . '"');
         echo file_get_contents($file);
-      } else {   
+      } else {
         header("HTTP/1.0 404 Not Found");
       }
       exit;
@@ -502,7 +440,7 @@ class {{$module->getModuleName()}}ObjectBase {
             debug_display('Delete ' . self::getFilesPath()  . DIRECTORY_SEPARATOR .  $this->get{{$field.camelcase}}OriginalPicture() . ' Result: ' . $result);
           }  
         {{/if}}
-        $this->set{{$field.camelcase}}('');      
+        $this->set{{$field.camelcase}}('');
       }
     }
   {{/if}}
@@ -537,32 +475,6 @@ class {{$module->getModuleName()}}ObjectBase {
     $clean = str_replace('/', '', $clean);
     $clean = str_replace('\\', '', $clean);
     return $clean;
-  }
-  
-  public static function cleanFilename($filename)  {
-      $result = strtolower($filename);
-      // Remove accents
-      $result = strtr($result,  "�����������������������������������������������������",  "aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn");
-
-      // Soft way
-      $result = str_replace("#", "No.", $result); 
-      $result = str_replace("$", "Dollar", $result); 
-      $result = str_replace("%", "Percent", $result); 
-      $result = str_replace("^", " ", $result); 
-      $result = str_replace("&", "and", $result); 
-      $result = str_replace("*", " ", $result); 
-      $result = str_replace("?", " ", $result);
-      $result = str_replace(",", " ", $result);
-      
-      // strip all non word chars
-      //$result = preg_replace('/\W/', ' ', $result); // HARD WAY...
-
-      // replace all white space sections with a dash
-      $result = preg_replace('/\ +/', '-', $result);
-      // trim dashes
-      $result = preg_replace('/\-$/', '', $result);
-      $result = preg_replace('/^\-/', '', $result);
-      return $result;
   }
 
   protected function checkFilename($file)  {
@@ -670,63 +582,7 @@ class {{$module->getModuleName()}}ObjectBase {
       {{/if}}
     {{/foreach*}}
   }
-  
-  protected static function getMimeType($filename) {
-    $extension = strtolower(end(explode('.',$filename)));
-    $mime_types = array(
-      'txt' => 'text/plain',
-      'htm' => 'text/html',
-      'html' => 'text/html',
-      'php' => 'text/html',
-      'css' => 'text/css',
-      'js' => 'application/javascript',
-      'json' => 'application/json',
-      'xml' => 'application/xml',
-      'swf' => 'application/x-shockwave-flash',
-      'flv' => 'video/x-flv',
-      // images
-      'png' => 'image/png',
-      'jpe' => 'image/jpeg',
-      'jpeg' => 'image/jpeg',
-      'jpg' => 'image/jpeg',
-      'gif' => 'image/gif',
-      'bmp' => 'image/bmp',
-      'ico' => 'image/vnd.microsoft.icon',
-      'tiff' => 'image/tiff',
-      'tif' => 'image/tiff',
-      'svg' => 'image/svg+xml',
-      'svgz' => 'image/svg+xml',
-      // archives
-      'zip' => 'application/zip',
-      'rar' => 'application/x-rar-compressed',
-      'exe' => 'application/x-msdownload',
-      'msi' => 'application/x-msdownload',
-      'cab' => 'application/vnd.ms-cab-compressed',
-      // audio/video
-      'mp3' => 'audio/mpeg',
-      'qt' => 'video/quicktime',
-      'mov' => 'video/quicktime',
-      // adobe
-      'pdf' => 'application/pdf',
-      'psd' => 'image/vnd.adobe.photoshop',
-      'ai' => 'application/postscript',
-      'eps' => 'application/postscript',
-      'ps' => 'application/postscript',
-      // ms office
-      'doc' => 'application/msword',
-      'rtf' => 'application/rtf',
-      'xls' => 'application/vnd.ms-excel',
-      'ppt' => 'application/vnd.ms-powerpoint',
-      // open office
-      'odt' => 'application/vnd.oasis.opendocument.text',
-      'ods' => 'application/vnd.oasis.opendocument.spreadsheet'
-    );
-    if (isset($mime_types[$extension])) {
-      return $mime_types[$extension];
-    }
-    return 'application/octet-stream';
-  }
-  
+
   public function getSearchString() {
     $fields[] = $this->getTitle();
     {{foreach from=$extra_fields item=field}}
@@ -737,14 +593,14 @@ class {{$module->getModuleName()}}ObjectBase {
     return implode(' ', $fields);
   }
 
-  public function getAsArray()  {  
+  public function getAsArray()  {
     $array = $this->vars;
     $array['id'] = $this->id;
     $array['item_id'] = $this->getId();
-    
-    
+
+
     {{foreach from=$extra_fields item=field}}
-    
+
     {{if $field.form_type == 'select'}}
     {{if isset($field.foptions.multiple)}}
     $array['values'][{{$field.name}}] =  implode(', ', $this->get{{$field.camelcase}}Values());
@@ -808,7 +664,7 @@ class {{$module->getModuleName()}}ObjectBase {
     $possible_objects = array(0 => '');
     foreach ($objects as $object) {
       if (($object->getId() != $this->getId()) && !$object->isDescendantOf($this->getId())) {
-        $possible_objects[$object->getId()] = $object->getTitle();
+        $possible_objects[$object->getId()] = (string)$object;
       }
     }
 
@@ -822,16 +678,16 @@ class {{$module->getModuleName()}}ObjectBase {
     $c->add('id', $this->getId(), MCFCriteria::NOT_EQUAL);
     $roots = self::doSelect($c);
     $array = array();
-    
+
     foreach($roots as $root)
     {
-      $array[$root->getId()] = $root->getTitle();
+      $array[$root->getId()] = (string)$root;
       if(!$root_only)
       {
-       $array = $array + self::getChildrenHierarchy($root->getId(), $separator, 1, $this->getId()); 
+       $array = $array + self::getChildrenHierarchy($root->getId(), $separator, 1, $this->getId());
       }
     }
-    
+
     return $array;
   }
   
@@ -845,16 +701,16 @@ class {{$module->getModuleName()}}ObjectBase {
         $sep = '';
         for($i = 0; $i < $level; $i++){$sep .= $separator;}
         $array[$children->getId()] = $sep . $children->getTitle();
-        $array = $array + self::getChildrenHierarchy($children->getId(), $separator, $level+1,$without_childrens_of); 
+        $array = $array + self::getChildrenHierarchy($children->getId(), $separator, $level+1,$without_childrens_of);
       }
-    } 
+    }
     return $array;
   }
   
   public static function getChildrensOf($id)  {
     $c = new MCFCriteria();
     $c->add('parent_id', $id, MCFCriteria::EQUAL);
-    return self::doSelect($c);    
+    return self::doSelect($c);
   }
   
   public function getChildrens()  {
@@ -940,9 +796,9 @@ class {{$module->getModuleName()}}ObjectBase {
     $query = $c->buildQuery(cms_db_prefix().self::DB_NAME);
     $result = $db->execute($query, $c->values);
     if($result)
-    {    
+    {
       $row = $result->FetchRow();
-      return $row['nbitems'];  
+      return $row['nbitems'];
     }
     else
     {
@@ -965,7 +821,7 @@ class {{$module->getModuleName()}}ObjectBase {
         }
       }
       if($by_id)
-      {        
+      {
         $objects[$object->getId()] = $object;
       }
       else
@@ -1005,9 +861,7 @@ class {{$module->getModuleName()}}ObjectBase {
     return self::buildObjects($result);
   }
 
-  /**
-    @return {{$module->getModuleName()}}Object
-    */
+  /** @return {{$module->getModuleName()}}Object */
 
   public static function doSelectOne(MCFCriteria $crit) {
     $c = clone $crit;
@@ -1064,7 +918,7 @@ class {{$module->getModuleName()}}ObjectBase {
     if(!is_null($prefix)) $prefix .= '.';
     if (isset($params[$prefix.'id'])) {
       $this->setId($params[$prefix.'id']);
-    }    
+    }
     if (isset($params[$prefix.'user_id'])) {
       $this->setUserId($params[$prefix.'user_id']);
     }
@@ -1100,7 +954,7 @@ class {{$module->getModuleName()}}ObjectBase {
     }
     if (isset($params[$prefix.'published'])) {
       $this->setPublished($params[$prefix.'published']);
-    }    
+    }
     if (isset($params[$prefix.'send_update_immediately'])) {
       $this->send_update_immediately = $params[$prefix.'send_update_immediately'];
     }
@@ -1118,7 +972,7 @@ class {{$module->getModuleName()}}ObjectBase {
   public function toArray()
   {
     $array = array();
-    
+
     $array['id'] = $this->getId();
     $array['user_id'] = $this->getUserId();
     $array['parent_id'] = $this->parent_id;
@@ -1131,7 +985,7 @@ class {{$module->getModuleName()}}ObjectBase {
     $array['mcfi_updated_timestamp'] = $this->mcfi_updated_timestamp;
     $array['parent_item'] = $this->parent_item;
     $array['published'] = $this->published;
-    
+
     {{foreach from=$extra_fields item=field}}
     $array['{{$field.name}}'] = $this->get{{$field.camelcase}}();
     {{/foreach}}
@@ -1147,11 +1001,11 @@ class {{$module->getModuleName()}}ObjectBase {
     if (isset($row[self::DB_ITEM.'__id']))
     {
       $this->setId($row[self::DB_ITEM.'__id']);
-    }    
-    
+    }
+
     if (isset($params['user_id'])) {
         $this->user_id = $row[self::DB_ITEM.'__user_id']; //$params['created_at'];
-    }    
+    }
     if (isset($params['created_at'])) {
         $this->created_at = $row[self::DB_ITEM.'__created_at']; //$params['created_at'];
       }
@@ -1170,9 +1024,9 @@ class {{$module->getModuleName()}}ObjectBase {
     if (isset($params['mcfi_updated_timestamp'])) {
       $this->mcfi_updated_timestamp = $row[self::DB_ITEM.'__mcfi_updated_timestamp'];
     }
-    
-    
-    
+
+
+
     foreach (self::$fields as $field)
     {
       if (isset($row[self::DB_ITEM.'__'.$field]))
@@ -1206,7 +1060,7 @@ class {{$module->getModuleName()}}ObjectBase {
       $this->insert($params);
     }
     $this->postSave();
-    cms_utils::get_module('{{$module->getModuleName()}}')->index($this);
+    cms_utils::get_module(self::MODULE_NAME)->index($this);
     //  debug_display($entry); // TO IMPLEMENT: Show datas for debug
     return true;
   }
@@ -1215,17 +1069,17 @@ class {{$module->getModuleName()}}ObjectBase {
     if ($this->getId()) {
       $query = 'DELETE FROM '.cms_db_prefix().self::DB_NAME .' WHERE id = ?';
       $this->query($query, array($this->id));
-      if(class_exists(''))  {
-        MX_RelationLink::cleanRelatedItems('{{$module->getModuleName()}}', $this->getId());
+      if(class_exists('MX_RelationLink'))  {
+        MX_RelationLink::cleanRelatedItems(self::MODULE_NAME, $this->getId());
       }
     }
-    // DELETE ALL RELATED DOCUMENTS    
+    // DELETE ALL RELATED DOCUMENTS
     {{foreach from=$extra_fields item=field}}
       {{if $field.form_type == 'file'}}
         $this->delete{{$field.camelcase}}();
       {{/if}}
     {{/foreach}}
-    cms_utils::get_module('{{$module->getModuleName()}}')->deindex($this);
+    cms_utils::get_module(self::MODULE_NAME)->deindex($this);
     return true;
   }
 
@@ -1244,7 +1098,7 @@ class {{$module->getModuleName()}}ObjectBase {
       $values[] = $this->parent_id;
 		} else {
 			$query .= ' WHERE parent_id = 0 OR parent_id IS NULL';
-		}		
+		}
 		$result = $db->execute($query, $values);
 		if(!$result) return false;
     $row = $result->FetchRow();
@@ -1256,7 +1110,7 @@ class {{$module->getModuleName()}}ObjectBase {
     else
     {
       $userid = get_userid();
-    }    
+    }
     $query = 'INSERT INTO '.cms_db_prefix().self::DB_NAME . '
       SET id = ?,
         user_id = ?,
@@ -1294,7 +1148,7 @@ class {{$module->getModuleName()}}ObjectBase {
       $this->send_update_immediately,
       $this->full_text_search()
     ));
-    cms_utils::get_module('{{$module->getModuleName()}}')->SendEvent('ContentEditPost', array());
+    cms_utils::get_module(self::MODULE_NAME)->SendEvent('ContentEditPost', array());
     return true;
   }
 
@@ -1341,7 +1195,7 @@ class {{$module->getModuleName()}}ObjectBase {
       $this->full_text_search(),
       $this->id
     ));
-    cms_utils::get_module('{{$module->getModuleName()}}')->SendEvent('ContentEditPost',array());
+    cms_utils::get_module(self::MODULE_NAME)->SendEvent('ContentEditPost',array());
     return true;
   }
   
@@ -1362,15 +1216,12 @@ class {{$module->getModuleName()}}ObjectBase {
       $this->save();
     }
   }
-  
+
+  /**   @deprecated */
+
   public static function retrieveContextId()
   {
-    if(cmsms())
-      if(cmsms()->GetContentOperations())
-        if(cmsms()->GetContentOperations()->getContentObject())
-          return cmsms()->GetContentOperations()->getContentObject()->Id();
-		return 'm1_'; // Force an id
-    // return null;
+      return MCFTools::retrieveContextId();
   }
   
   // FILTERS
@@ -1392,7 +1243,7 @@ class {{$module->getModuleName()}}ObjectBase {
             $items = array();
           }
           $form->setWidget('moduleFilters[{{$field.name}}]', 'select', array(
-            'values' => 
+            'values' =>
                 array('' => '&laquo; {{$field.label}} &raquo;') +
                 $items
               ,
@@ -1401,7 +1252,7 @@ class {{$module->getModuleName()}}ObjectBase {
             ));
         {{elseif $field.form_type == 'select'}}
           $form->setWidget('moduleFilters[{{$field.name}}]', 'select', array(
-            'values' => 
+            'values' =>
                 array('' => '&laquo; {{$field.label}} &raquo;') +
                 {{$module->getModuleName()}}Object::${{$field.name}}_options
               ,
@@ -1419,7 +1270,7 @@ class {{$module->getModuleName()}}ObjectBase {
           }
         
           $form->setWidget('moduleFilters[{{$field.name}}]', 'select', array(
-            'values' => 
+            'values' =>
                 array(0 => '&laquo; {{$field.label}} &raquo;') +
                 $users
               ,
@@ -1442,7 +1293,7 @@ class {{$module->getModuleName()}}ObjectBase {
         $users = array();
       }
     $form->setWidget('moduleFilters[user_id]', 'select', array(
-      'values' => 
+      'values' =>
           array(0 => '&laquo; User &raquo;') + $users
         ,
         'label' => '',
@@ -1462,9 +1313,9 @@ class {{$module->getModuleName()}}ObjectBase {
         {{elseif $field.type == 'module' || $field.type == 'user' || $field.form_type == 'select'}}
           if (isset($filters['{{$field.name}}']))
           {
-            {{if isset($field.foptions.multiple)}}            
+            {{if isset($field.foptions.multiple)}}
               $c->add('{{$field.name}}', $filters['{{$field.name}}'], MCFCriteria::MULTILIKE);
-            {{else}}            
+            {{else}}
               $c->add('{{$field.name}}', $filters['{{$field.name}}'], MCFCriteria::EQUAL);
             {{/if}}
           }
@@ -1530,7 +1381,7 @@ class {{$module->getModuleName()}}ObjectBase {
   }
 
       {{/if}}
-    {{/foreach}}  
+    {{/foreach}}
   {{/foreach}}
 
   public static function getFEFilter(&$form, $filter, $options = array())  {
@@ -1561,7 +1412,7 @@ class {{$module->getModuleName()}}ObjectBase {
 
   // Executed before the save action is fired
   public function preSave()  {
-    
+
   }
   
   // Executed after the sace action is fired
@@ -1573,7 +1424,7 @@ class {{$module->getModuleName()}}ObjectBase {
       {
         if(method_exists($digest, 'sendUpdateImmediately'))
         {
-          $result = $digest->sendUpdateImmediately('{{$module->getModuleName()}}');
+          $result = $digest->sendUpdateImmediately(self::MODULE_NAME);
         }
       }
     }
@@ -1588,35 +1439,35 @@ class {{$module->getModuleName()}}ObjectBase {
   
   public function getUpdateBody()
   {
-    $module = cms_utils::get_module('{{$module->getModuleName()}}');
-    $module->smarty->assign('item', $this);    
+    $module = cms_utils::get_module(self::MODULE_NAME);
+    $module->smarty->assign('item', $this);
     return $module->ProcessTemplateFor('direct_email', array());
   }
 
   // Executed in the edit action when everything went fine (Executed after item save though)
   public function postActions()  {
-    
+
   }
   
   // Allow you to restrict the frontend list and details with required filters
   public static function globalFrontendFilters(MCFCriteria &$c, $params = array())  {
-    
+
   }
   
   public static function buildFrontendFilters(MCFCriteria &$c, $params)  {
     // Module Xtender filters
     if (isset($params['currentpage']) && class_exists('MX_RelationLink')) {
-      $c->add('id', MX_RelationLink::getRelatedItemsIds('{{$module->getModuleName()}}', cms_utils::get_current_pageid(), 'pages'), MCFCriteria::IN);
+      $c->add('id', MX_RelationLink::getRelatedItemsIds(self::MODULE_NAME, cms_utils::get_current_pageid(), 'pages'), MCFCriteria::IN);
     }
     if (isset($params['pages']) && class_exists('MX_RelationLink')) {
       $glue = isset($params['all_pages']) ? 'AND' : 'OR';
-      $c->add('id', MX_RelationLink::getRelatedItemsIds('{{$module->getModuleName()}}', explode(',', $params['pages']), 'pages', $glue), MCFCriteria::IN);
+      $c->add('id', MX_RelationLink::getRelatedItemsIds(self::MODULE_NAME, explode(',', $params['pages']), 'pages', $glue), MCFCriteria::IN);
     }
     if (isset($params['options']) && class_exists('MX_RelationLink')) {
       $glue = isset($params['all_options']) ? 'AND' : 'OR';
-      $c->add('id', MX_RelationLink::getRelatedItemsIds('{{$module->getModuleName()}}', explode(',', $params['options']), 'options', $glue), MCFCriteria::IN);
+      $c->add('id', MX_RelationLink::getRelatedItemsIds(self::MODULE_NAME, explode(',', $params['options']), 'options', $glue), MCFCriteria::IN);
     }
-    
+
     if (isset($params['mxfilters_options']) && is_array($params['mxfilters_options'])) {
       $options = array();
       foreach ($params['mxfilters_options'] as $option) {
@@ -1625,7 +1476,7 @@ class {{$module->getModuleName()}}ObjectBase {
         }
       }
       if (count($options)  && class_exists('MX_RelationLink')) {
-        $c->add('id', MX_RelationLink::getRelatedItemsIds('{{$module->getModuleName()}}', $options, 'options', 'AND'), MCFCriteria::IN);
+        $c->add('id', MX_RelationLink::getRelatedItemsIds(self::MODULE_NAME, $options, 'options', 'AND'), MCFCriteria::IN);
       }
     }
 
@@ -1637,12 +1488,12 @@ class {{$module->getModuleName()}}ObjectBase {
         }
       }
       if (count($pages)  && class_exists('MX_RelationLink')) {
-        $c->add('id', MX_RelationLink::getRelatedItemsIds('{{$module->getModuleName()}}', $pages, 'pages', 'AND'), MCFCriteria::IN);
+        $c->add('id', MX_RelationLink::getRelatedItemsIds(self::MODULE_NAME, $pages, 'pages', 'AND'), MCFCriteria::IN);
       }
     }
-    
-    // SEARCH 
-    
+
+    // SEARCH
+
     if (isset($params['filter_title'])) {
       $filter_title = trim(html_entity_decode($params['filter_title']));
       $filter_title = str_replace(array('%', '?'), ' ', $filter_title);
@@ -1657,7 +1508,7 @@ class {{$module->getModuleName()}}ObjectBase {
         }
       }
     }
-    
+
     if (isset($params['filter_all'])) {
       $filter_all = trim(html_entity_decode($params['filter_all']));
       $filter_all = str_replace(array('%', '?'), ' ', $filter_all);
@@ -1672,9 +1523,9 @@ class {{$module->getModuleName()}}ObjectBase {
         }
       }
     }
-    
+
     // Module Filters
-    
+
     {{foreach from=$filters item=filter}}
     if (isset($params['{{$filter.name}}']) && $params['{{$filter.name}}'] != '') {
       {{if in_array($filter.type, array('less', 'less_equal', 'greater', 'greater_equal'))}}
@@ -1688,7 +1539,7 @@ class {{$module->getModuleName()}}ObjectBase {
       {{/if}}
     }
     {{/foreach}}
-    
+
   }
 
   public static function cleanFilterValue($name, $value)

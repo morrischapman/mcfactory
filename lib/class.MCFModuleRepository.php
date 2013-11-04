@@ -16,13 +16,16 @@ class MCFModuleRepository
 			$row['filters'] = unserialize($row['filters']);
 			$row['extra_features'] = unserialize($row['extra_features']);
 			$module->populateFromArray($row, false);
-
 		    $modules[] = $module;
 		}
 		return $modules;
 	}
-	
-	public static function doSelectOne(MCFCriteria $c) {
+
+    /**
+     * @param MCFCriteria $c
+     * @return MCFModule
+     */
+    public static function doSelectOne(MCFCriteria $c) {
 		
 		$c->setLimit(1);
 		$result = self::doSelect($c);
@@ -31,7 +34,7 @@ class MCFModuleRepository
 			reset($result);
 			return current($result);
 		} else {
-			return false;
+			return null;
 		}
 	}
 	
