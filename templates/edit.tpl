@@ -189,40 +189,16 @@
 {$end_tab}
 
 {$start_options_tab}
-<div class="pageoverflow2">
-  <p class="pagetext2">Parent module:</p>
-  <p class="pageinput2">{$input_module_parent}</p>
-</div>
 
-<div class="pageoverflow2">
-  <p class="pagetext2">Admin section:</p>
-  <p class="pageinput2">{$input_admin_section}</p>
-</div>
+{if isset($form_module_options)}
+    {if $form_module_options->hasErrors()}<div style="color: red;">{$form_module_options->showErrors()}</div>{/if}
 
-<div class="pageoverflow2">
-  <p class="pagetext2">Show module:</p>
-  <p class="pageinput2"><label>{$input_show_module} Show the module in the admin?</label></p>
-</div>
+    {$form_module_options->showWidgets()}
 
-<div class="pageoverflow2">
-  <p class="pagetext2">API: {if isset($api_url)} (<em><a href="{$api_url}">{$api_url}</a></em>){/if}</p>
-  <p class="pageinput2"><label>{$input_api_enabled} Enable API access</label></p>
-</div>
+    {$form_module_options->renderFieldsets()}
 
-<div class="pageoverflow2">
-  <p class="pagetext2">User's module:</p>
-  <p class="pageinput2"><label>{$input_is_user_module} can the user add it's own entries?</label></p>
-</div>
-
-<div class="pageoverflow2">
-  <p class="pagetext2">Protect files:</p>
-  <p class="pageinput2"><label>{$input_is_protected} Should the files uploaded be stored in a protected folder?</label></p>
-</div>
-
-<div class="pageoverflow2">
-  <p class="pagetext2">File storage path (server path) in case of protected files:</p>
-  <p class="pageinput2">{$input_files_path}</p>
-</div>
+    <hr />
+{/if}
 
 <div class="pageoverflow2">
 		<p class="pagetext2">Restore module templates</p>
