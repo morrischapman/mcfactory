@@ -24,9 +24,11 @@ class MCFModule
     protected $module_friendlyname;
     protected $module_version = 1;
 
+    /**
+     * @var array $fields Module fields
+     */
+    protected $fields;
     protected $actions;
-
-
 
     // GETTERS
 
@@ -37,6 +39,25 @@ class MCFModule
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFields()
+    {
+        if(empty($this->fields)) $this->fields = $this->retrieveFields();
+        return $this->fields;
+    }
+
+    /**
+     * @return array
+     */
+    private function retrieveFields()
+    {
+        $c = new MCFCriteria();
+        $c->add('module_id', $this->getId());
+        return MCFModuleField::doSelect($c);
     }
 
     /**
@@ -149,7 +170,7 @@ class MCFModule
      * @param $value
      * @deprecated
      */
-    protected function set($name, $value)
+    public function set($name, $value)
     {
         if ($this->$name !== $value) {
             $this->$name = $value;
@@ -250,7 +271,7 @@ class MCFModule
     public function getStructure()
     {
         if (!is_object($this->structure)) {
-            $this->structure = new MCFModuleStructure($this->extra_fields);
+            $this->structure = new MCFModuleStructure($this->extra_fields, $this);
         }
         return $this->structure;
     }
@@ -457,17 +478,17 @@ class MCFModule
     public function setStructure($value)
     {
         if (empty($value)) {
-            $structure = new MCFModuleStructure($this->extra_fields);
+            $structure = new MCFModuleStructure($this->extra_fields, $this);
             $value = $structure;
         }
 
         if (is_object($value)) {
             $this->set('structure', $value);
         } elseif (is_array($value)) {
-            $structure = new MCFModuleStructure($value);
+            $structure = new MCFModuleStructure($value, $this);
             $this->set('structure', $structure);
         } else {
-            $structure = new MCFModuleStructure(unserialize($value));
+            $structure = new MCFModuleStructure(unserialize($value), $this);
             $this->set('structure', $structure);
         }
     }
@@ -594,176 +615,13 @@ class MCFModule
 
     // OTHER FUNCTIONS
 
+    /**
+     * @return array
+     * @deprecated
+     */
     public function getFieldTypes()
     {
-        $array = array(
-            'text' => array(
-                'type' => 'text',
-                'label' => 'Text field',
-                'column_type' => 'C(255)',
-                'form_type' => 'text',
-                'options' => true
-            ),
-            'textarea' => array(
-                'type' => 'textarea',
-                'label' => 'Text area',
-                'column_type' => 'X',
-                'form_type' => 'textarea',
-                'options' => true
-            ),
-            'textarea_plain' => array(
-                'type' => 'textarea_plain',
-                'label' => 'Text area (no WYSIWYG)',
-                'column_type' => 'X',
-                'form_type' => 'textarea_plain',
-                'options' => true
-            ),
-            'textarea_code' => array(
-                'type' => 'textarea_code',
-                'label' => 'Text area (code)',
-                'column_type' => 'X',
-                'form_type' => 'textarea_code',
-                'options' => true
-            ),
-            'select' => array(
-                'type' => 'select',
-                'label' => 'Select (Dropdown)',
-                'column_type' => 'C(255)',
-                'form_type' => 'select',
-                'options' => true,
-                'options_default' => 'values:option1=>Option 1,option2=>Option2;'
-            ),
-            'checkbox' => array(
-                'type' => 'checkbox',
-                'label' => 'Checkbox',
-                'column_type' => 'I',
-                'form_type' => 'checkbox',
-                'options' => true,
-                'options_default' => 'text:My checkbox text;'
-            ),
-            'date' => array(
-                'type' => 'date',
-                'label' => 'Date',
-                'column_type' => 'D',
-                'form_type' => 'text',
-                'options' => true,
-                'options_default' => 'start_year:' . date('Y', strtotime('-1 year')) . ';'
-            ),
-            'time' => array(
-                'type' => 'time',
-                'label' => 'Time',
-                'column_type' => 'T',
-                'form_type' => 'text',
-                'options' => true,
-                'options_default' => 'midnight: false;'
-            ),
-            'datetime' => array(
-                'type' => 'datetime',
-                'label' => 'Date & Time',
-                'column_type' => 'I',
-                'form_type' => 'datetime',
-                'options' => true,
-                'options_default' => 'start_year:' . date('Y', strtotime('-1 year')) . ';'
-            ),
-            'document' => array(
-                'type' => 'document',
-                'label' => 'Document',
-                'column_type' => 'C(255)',
-                'form_type' => 'file',
-                'options' => true
-            ),
-            'image' => array(
-                'type' => 'image',
-                'label' => 'Image',
-                'column_type' => 'C(255)',
-                'form_type' => 'file',
-                'options' => true,
-                'options_default' => 'size:150x150;'
-            ),
-            'country' => array(
-                'type' => 'country',
-                'label' => 'Country',
-                'column_type' => 'C(255)',
-                'form_type' => 'select',
-                'options' => true,
-                'options_default' => ''
-            ),
-            'hidden_text' => array(
-                'type' => 'hidden_text',
-                'label' => 'Hidden text',
-                'column_type' => 'C(255)',
-                'form_type' => 'none',
-                'options' => false
-            ),
-            'static' => array(
-                'type' => 'static',
-                'label' => 'Static value',
-                'column_type' => 'X',
-                'form_type' => 'static',
-                'options' => false
-            ),
-            'module' => array(
-                'type' => 'module',
-                'label' => 'Module',
-                'column_type' => 'C(255)',
-                'form_type' => 'module',
-                'options' => true,
-                'options_default' => 'module_name:MyModuleName;'
-            ),
-            'page' => array(
-                'type' => 'page',
-                'label' => 'Page',
-                'column_type' => 'C(255)',
-                'form_type' => 'page',
-                'options' => true
-            ),
-            'user' => array(
-                'type' => 'user',
-                'label' => 'CMS User',
-                'column_type' => 'C(255)',
-                'form_type' => 'user',
-                'options' => true
-            ),
-            'group' => array(
-                'type' => 'group',
-                'label' => 'CMS Group',
-                'column_type' => 'C(255)',
-                'form_type' => 'group',
-                'options' => true
-            ),
-
-            // 'user' => array( // This is only an On/Off option !
-            // 				'type' => 'user',
-            // 				'label' => 'User',
-            // 				'column_type' => 'I',
-            // 				'form_type' => 'user',
-            // 				'options' => false
-            // 			),
-        );
-
-        if (class_exists('CMSFormInputFiles')) {
-            // TODO: Find a way to insert that info from the MCMedias module
-            $array['files'] = array(
-                'type' => 'files',
-                'label' => 'Multiple files',
-                'column_type' => 'C(255)',
-                'form_type' => 'files',
-                'options' => true
-            );
-        }
-
-        if (class_exists('CMSFormInputImages')) {
-            // TODO: Find a way to insert that info from the MCMedias module
-            $array['images'] = array(
-                'type' => 'images',
-                'label' => 'Multiple images',
-                'column_type' => 'C(255)',
-                'form_type' => 'images',
-                'options' => true
-            );
-        }
-
-        return $array;
+        return MCFModuleField::getFieldTypes();
     }
 
     public function getFilterTypes()

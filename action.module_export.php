@@ -37,6 +37,14 @@ if (isset($params['module_id']))
 	$xml->addChild('module_friendly_name', $module->getModuleFriendlyname());
   $xml->addChild('module_code', base64_encode(serialize($module)));
 
+    // FIELDS
+
+    // TODO: EXPORT FIELDS
+
+    // ADMIN_TEMPLATES
+
+    // TODO: EXPORT ADMIN TEMPLATES
+
 	// ACTIONS
 	$actions = MCFModuleAction::doSelect(array('where' => array('module_id' => $params['module_id'])));	
 	$datas = array();

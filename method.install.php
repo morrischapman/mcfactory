@@ -2,6 +2,8 @@
 
 if (!cmsms()) exit;
 
+require_once('autoloader.php');
+
 $db = $this->GetDb();
 
 $dict = NewDataDictionary($db);
@@ -33,6 +35,9 @@ $flds = array(
 $sql = $dict->CreateTableSQL(cms_db_prefix() . 'module_mcfactory_modules', implode(',', $flds), array('mysql' => 'TYPE=MyISAM'));
 $dict->ExecuteSQLArray($sql);
 $db->CreateSequence(cms_db_prefix() . 'module_mcfactory_modules_seq');
+
+MCFModuleField::createTable();
+MCFModuleAdminTemplate::createTable();
 
 $flds = array(
 	'id I KEY AUTO',	
