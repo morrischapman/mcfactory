@@ -131,6 +131,15 @@ if (isset($params['publish']) || isset($params['save'])) {
     }
 }
 
+// TODO: SORT EVERYTHING HERE
+if($module->getId())
+{
+    $smarty->assign('module_design', $this->CreateLink($id, 'module_design', $returnid, null, array('module_id' => $module->getId()), null, true));
+}
+
+
+
+
 $field_types = $module->getFieldTypes();
 $field_types_with_options = array();
 foreach ($field_types as $field_type) {

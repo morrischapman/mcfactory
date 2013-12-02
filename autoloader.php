@@ -1,4 +1,5 @@
 <?php
+    if(!cmsms()) exit;
 
     function mcf_autoloader($classname)
     {

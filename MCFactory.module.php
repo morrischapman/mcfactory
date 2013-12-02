@@ -45,7 +45,7 @@ class MCFactory extends CMSModule
 
     public function GetVersion()
     {
-        return '3.4.99';
+        return '3.4.92';
     }
 
     public function GetAuthor()
@@ -93,10 +93,9 @@ class MCFactory extends CMSModule
         echo $this->Lang('display_error');
     }
 
-    // public function GetParameters()     { return array(); }
     public function GetDependencies()
     {
-        return array('CMSForms' => '1.0.4');
+        return array('CMSForms' => '1.10.14');
     }
 
     public function InstallPostMessage()
@@ -121,6 +120,7 @@ class MCFactory extends CMSModule
 
     public function MinimumCMSVersion()
     {
+        // TODO: Cut to 1.10 with MCF 3.10
         return '1.9';
     }
 
@@ -133,6 +133,7 @@ class MCFactory extends CMSModule
         $this->SetParameterType('module_id', CLEAN_STRING);
 
 
+        // To remove one day
         $this->SetParameterType(CLEAN_REGEXP . '/[-a-zA-Z0-9_]*/', CLEAN_NONE);
     }
 
@@ -183,16 +184,25 @@ class MCFactory extends CMSModule
     {
         $this->ShowMessages();
 
+        $config = cms_utils::get_config();
+
         $html = '';
-        $html .= '<link rel="stylesheet" type="text/css" href="' . $this->GetModuleURLPath() . '/lib/jquery/smoothness/jquery-ui-1.8.4.custom.css" />';
-        // $html  = '<script type="text/javascript" src="' . $this->config['root_url'] . '/modules/MCFactory/js/jquery-1.3.2.min.js"></script>';
-        // 			$html .= '<script type="text/javascript">jQuery.noConflict();</script>';
-        // TODO : CHECK THOSE LINES...
-        // Seems useless
-        //	$html .= '<script type="text/javascript" src="' . $this->config['root_url'] . '/modules/TinyMCE/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>';
-        //	$html .= '<script type="text/javascript" src="' . $this->config['root_url'] . '/tmp/tinyconfig.js"></script>';
+//        $html .= '<link rel="stylesheet" type="text/css" href="' . $this->loadResource('public/css/jquery-ui.min.css') . '" />';
+//        $html .= '<script type="text/javascript" src="' . $this->loadResource('public/js/jquery-ui.min.js') . '"></script>';
+//        $html .= '<script type="text/javascript" src="' . $this->loadResource('public/js/jquery-1.10.2.min.js') . '"></script>';
+//        $html .= '<script type="text/javascript" src="' . $this->loadResource('public/js/jquery-ui.min.js') . '"></script>';
+
+//        $html .= '<script type="text/javascript" src="' . $config['root_url'] . '/lib/jquery/js/jquery.ui.nestedSortable-1.3.4.js"></script>';
+//        $html .= '<script type="text/javascript" src="' . $config['root_url'] . '/lib/jquery/js/jquery.json-2.3.min.js"></script>';
+//        $html .= '<script type="text/javascript" src="' . $this->loadResource('public/js/jquery.ui.tabs.js') . '"></script>';
+
 
         return $html;
+    }
+
+    public function loadResource($file)
+    {
+        return $this->GetModuleURLPath() . '/resources/' . $file;
     }
 
     /**

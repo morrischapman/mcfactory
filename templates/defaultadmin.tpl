@@ -2,7 +2,8 @@
 <table cellspacing="0" class="pagetable">
     <thead>
         <tr>
-            <th>Modules</th>
+            <th>Module name</th>
+            <th>Smarty</th>
             <th class="pageicon" style="width:16px;">&nbsp;</th>
             <th class="pageicon" style="width:16px;">&nbsp;</th>
             <th class="pageicon" style="width:16px;">&nbsp;</th>
@@ -13,7 +14,10 @@
     <tbody>
         {foreach from=$rows item=row}
         <tr class="{cycle values="row1,row2"}" onmouseover="this.className='{cycle values="row1,row2"}hover';" onmouseout="this.className='{cycle values="row1,row2"}';">
-            <td>{$row.title} (<em>{$row.module_friendlyname}</em>)</td>
+            <td width="200px;">
+                <a href="{$row.edit_link}">{$row.module_friendlyname}</a>
+            </td>
+            <td>{ldelim}{$row.module_name}{rdelim}</em></td>
             <td>{$row.publish}</td>
             <td>{$row.export}</td>
             <td>{$row.view}</td>

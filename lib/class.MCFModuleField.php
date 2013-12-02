@@ -179,6 +179,8 @@ class MCFModuleField extends MCFObject
         'options_data' => 'XL'
     );
 
+    protected static $table_fields_indexes = array('module_id', 'position', 'field_name');
+
     public static $blacklist = array('id', 'parentid', 'title', 'createdat', 'createdby', 'updatedat', 'updatedby', 'orderby', 'parent', 'parentmodule', 'published', 'order', 'orderby', 'from', 'select', 'in', 'date', 'fulltextsearch', 'coreslug', 'coreslug', 'userid', 'user', 'function', 'byid', 'json', 'asarray', 'searchstring', 'group', 'by', 'add', 'all', 'alter', 'analyze', 'and', 'as', 'asc', 'asensitive', 'before', 'between', 'bigint', 'binary', 'blob', 'both', 'by', 'call', 'cascade', 'case', 'change', 'char', 'character', 'check', 'collate', 'column', 'condition', 'constraint', 'continue', 'convert', 'create', 'cross', 'currentdate', 'currenttime', 'currenttimestamp', 'currentuser', 'cursor', 'database', 'databases', 'dayhour', 'daymicrosecond', 'dayminute', 'daysecond', 'dec', 'decimal', 'declare', 'default', 'delayed', 'delete', 'desc', 'describe', 'deterministic', 'distinct', 'distinctrow', 'div', 'double', 'drop', 'dual', 'each', 'else', 'elseif', 'enclosed', 'escaped', 'exists', 'exit', 'explain', 'false', 'fetch', 'float', 'float4', 'float8', 'for', 'force', 'foreign', 'from', 'fulltext', 'grant', 'group', 'having', 'highpriority', 'hourmicrosecond', 'hourminute', 'hoursecond', 'if', 'ignore', 'in', 'index', 'infile', 'inner', 'inout', 'insensitive', 'insert', 'int', 'int1', 'int2', 'int3', 'int4', 'int8', 'integer', 'interval', 'into', 'is', 'iterate', 'join', 'key', 'keys', 'kill', 'leading', 'leave', 'left', 'like', 'limit', 'lines', 'load', 'localtime', 'localtimestamp', 'lock', 'long', 'longblob', 'longtext', 'loop', 'lowpriority', 'match', 'mediumblob', 'mediumint', 'mediumtext', 'middleint', 'minutemicrosecond', 'minutesecond', 'mod', 'modifies', 'natural', 'not', 'nowritetobinlog', 'null', 'numeric', 'on', 'optimize', 'option', 'optionally', 'or', 'order', 'out', 'outer', 'outfile', 'precision', 'primary', 'procedure', 'purge', 'read', 'reads', 'real', 'references', 'regexp', 'release', 'rename', 'repeat', 'replace', 'require', 'restrict', 'return', 'revoke', 'right', 'rlike', 'schema', 'schemas', 'secondmicrosecond', 'select', 'sensitive', 'separator', 'set', 'show', 'smallint', 'soname', 'spatial', 'specific', 'sql', 'sqlexception', 'sqlstate', 'sqlwarning', 'sqlbigresult', 'sqlcalcfoundrows', 'sqlsmallresult', 'ssl', 'starting', 'straightjoin', 'table', 'terminated', 'then', 'tinyblob', 'tinyint', 'tinytext', 'to', 'trailing', 'trigger', 'true', 'undo', 'union', 'unique', 'unlock', 'unsigned', 'update', 'usage', 'use', 'using', 'utcdate', 'utctime', 'utctimestamp', 'values', 'varbinary', 'varchar', 'varcharacter', 'varying', 'when', 'where', 'while', 'with', 'write', 'xor', 'yearmonth', 'zerofill', 'sendupdateimmediately', 'level', 'events', 'event');
 
     const TABLE_NAME = 'module_mcfactory_module_fields';
@@ -268,6 +270,25 @@ class MCFModuleField extends MCFObject
         }
 
         return $field_types;
+    }
+
+    private function getFieldSettings()
+    {
+        $fields = self::getFieldTypes();
+        if(isset($fields[$this->field_type]))
+        {
+            return $fields[$this->field_type];
+        }
+        else
+        {
+            throw new Exception('No type found for field type ' . $this->field_type);
+        }
+    }
+
+    public function getFormType()
+    {
+        $field = $this->getFieldSettings();
+        return $field['form_type'];
     }
 
     public static function checkFieldType($type)

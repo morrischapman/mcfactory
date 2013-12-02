@@ -82,7 +82,7 @@ switch (true) {
     case version_compare($oldversion, '3.2.35', '<'):
         $sql = $dict->AddColumnSQL(cms_db_prefix() . 'module_mcfactory_modules', 'extra_features XL');
         $dict->ExecuteSQLArray($sql);
-    case version_compare($oldversion, '3.4.99', '<'):
+    case version_compare($oldversion, '3.4.92', '<'):
         MCFModuleField::createTable();
         MCFModuleAdminTemplate::createTable();
 }

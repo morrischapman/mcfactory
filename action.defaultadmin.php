@@ -1,5 +1,6 @@
 <?php
 if (!cmsms()) exit;
+/** @var $this MCFactory */
 
 if (!$this->CheckAccess()) {
 	return $this->DisplayErrorPage();
@@ -15,7 +16,9 @@ $tokken = isset($_REQUEST['_sx_'])?'_sx_='.$_REQUEST['_sx_']:'sp_='.$_REQUEST['s
 foreach ($modules as $module) {
 	$rows[] = array(
 		'title' => $this->CreateLink($id, 'edit', $returnid, $module->getModuleName(), array('module_id' => $module->getId()), '', false, false, 'class="itemlink"'),
+        'module_name' => $module->getModuleName(),
 		'module_friendlyname' => $module->getModuleFriendlyName(),
+        'edit_link' => $this->CreateLink($id, 'edit', $returnid, null, array('module_id' => $module->getId()), '', true),
 		'delete' => $this->CreateLink($id, 'delete', $returnid, $this->DisplayImage('application_delete.png', 'Delete'), array('module_id' => $module->getId()), 'Are you sure you want to delete this module?\n\n(No files will be deleted but the module will no longer be editable.)'),
 		'edit' => $this->CreateLink($id, 'edit', $returnid, $this->DisplayImage('application_edit.png', 'Edit'), array('module_id' => $module->getId())),
 		'publish' => $this->CreateLink($id, 'publish', $returnid, $this->DisplayImage('wand.png', 'Publish'), array('module_id' => $module->getId())),

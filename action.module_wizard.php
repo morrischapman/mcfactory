@@ -18,7 +18,7 @@ $form->setLabel('submit', $this->Lang('Continue'));
 if(!isset($params['module_id']))
 {
     $module = new MCFModule();
-    $form->setWidget('module_name', 'text', array('label' => 'Module name', 'tips' => 'Choose a name for your module', 'placeholder' => 'Acme Directory'));
+    $form->setWidget('module_friendlyname', 'text', array('label' => 'Module name', 'tips' => 'Choose a name for your module', 'placeholder' => 'Acme Directory', 'object' => &$module));
 
 
     if($form->isSent())
@@ -39,7 +39,7 @@ else
 {
     $module = MCFModuleRepository::retrieveByPk($params['module_id']);
     $form->setWidget('module_id', 'hidden', array('value' => $params['module_id']));
-    $smarty->assign('module_name', $module->getModuleName());
+    $smarty->assign('module_friendlyname', $module->getModuleFriendlyname());
 
 
 

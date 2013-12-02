@@ -175,7 +175,7 @@ class {{$module->getModuleName()}} extends CMSModule {
     
     if(is_object($mcf))
     {      
-        $html .= '<link rel="stylesheet" type="text/css" href="'.$mcf->GetModuleURLPath(). '/lib/jquery/smoothness/jquery-ui-1.8.4.custom.css" />';
+        $html .= '<link rel="stylesheet" type="text/css" href="' . $mcf->loadResource('public/css/jquery-ui.min.css') . '" />';
 
         // SELECT2
         $html .= '<link rel="stylesheet" type="text/css" href="'.$mcf->GetModuleURLPath(). '/lib/vendor/select2/select2.css" />';
@@ -342,6 +342,7 @@ class {{$module->getModuleName()}} extends CMSModule {
     
     {{$module->getModuleName()}}Object::buildFrontendFilters($c, $params);
     $c->addAscendingOrderByColumn('updated_at');
+// TODO:     $c->addAscendingOrderByColumn('mcfi_updated_timestamp');
     $items = {{$module->getModuleName()}}Object::doSelect($c);
 
     if (empty($items))

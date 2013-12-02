@@ -24,6 +24,10 @@ abstract class MCFObject
      */
     protected $updated_by;
 
+    /**
+     * Database fields mapping
+     * @var array
+     */
     protected static $table_fields = array(
         'id' => 'I KEY AUTO',
         'created_at' => 'DT',
@@ -32,7 +36,30 @@ abstract class MCFObject
         'updated_by' => 'I',
     );
 
+    /**
+     * Database indexed fields
+     * @var array
+     */
+    protected static $table_fields_indexes = array('id');
+
     const TABLE_NAME = '';
+
+    /**
+     * Table relations
+     * Example:
+     *  array(
+     *      'relation_name' => array(
+     *          'local' => 'local field',
+     *          'remote' => 'remote field',
+     *          'class' => 'Remote class'
+     *      )
+     * );
+     * @var array
+     */
+    protected static $table_relations = array();
+    // TODO
+    // $cascade => List of child objects // Possibly db constraint ?
+    // $forein_keys
 
     public static $blacklist = array(
         'tablefields'
@@ -55,6 +82,15 @@ abstract class MCFObject
             $fields[] = $field_name . ' ' . $field_type;
         }
         return $fields;
+    }
+
+    public static function getTableFieldIndexes()
+    {
+        if ($parent = get_parent_class(get_called_class())) {
+            return $parent::getTableFieldIndexes() + static::$table_fields_indexes;
+        } else {
+            return static::$table_fields_indexes;
+        }
     }
 
     /**
@@ -230,7 +266,7 @@ abstract class MCFObject
         return $entities;
     }
 
-    protected function populate($row, $entity = null)
+    protected static function populate($row, $entity = null)
     {
         if(is_null($entity))
         {
@@ -278,6 +314,10 @@ abstract class MCFObject
         $dict = NewDataDictionary($db);
         $sql = $dict->CreateTableSQL(cms_db_prefix() . static::TABLE_NAME, implode(',', static::retrieveTableFields()));
         $dict->ExecuteSQLArray($sql);
+
+        $idxname = strtolower(static::TABLE_NAME) . '_indexes';
+        $sqlarray = $dict->CreateIndexSQL($idxname, cms_db_prefix() . static::TABLE_NAME, implode(',', static::getTableFieldIndexes()));
+        $dict->ExecuteSQLArray($sqlarray);
     }
 
     public static function deleteTable()

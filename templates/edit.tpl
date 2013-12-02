@@ -1,3 +1,9 @@
+{*<div>*}
+    {*{if isset($module_design)}*}
+        {*<a href="{$module_design}" class="btn">Design</a>*}
+    {*{/if}*}
+{*</div>*}
+
 {$form_start}
 {$input_module_id}
 <p style="text-align: right;">
@@ -7,7 +13,6 @@
 </p>
 
 {$tab_headers}
-
 
 {$start_main_tab}
 <div class="pageoverflow2">
@@ -21,6 +26,9 @@
 </div>
 
 <div id="structure" style="margin-bottom: 7px;">
+
+    <button id="create-tab">+ Add a new tab</button>
+
 	<ul>
 		{foreach from=$structure->getTabs() item=tab key=tab_key}
 		<li{if $active_fields_tab eq $tab_key} class="ui-tabs-selected ui-state-active"{/if}><a href="#struc-{$tab_key}">{$tab.name}</a></li>
@@ -92,8 +100,6 @@
 		</div>
 	{/foreach}
 </div>
-
-<button id="create-tab">Add a new tab</button>
 
 
 
