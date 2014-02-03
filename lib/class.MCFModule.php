@@ -126,7 +126,8 @@ class MCFModule
         'layout' => 'Layout',
         'usersgroups' => 'Users & Groups',
         'extensions' => 'Extentions',
-        'siteadmin' => 'Site Admin'
+        'siteadmin' => 'Site Admin',
+        'ecommerce' => 'E-Commerce'
     );
 
     protected $is_user_module;
