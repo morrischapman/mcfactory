@@ -349,11 +349,22 @@ class {{$module->getModuleName()}}ObjectBase extends MCFModuleObject {
       return cms_utils::get_module(self::MODULE_NAME)->CreateLink($id,'download','','',array('item_id' => $this->getId(), 'field' => '{{$field.name}}'),'',true,false,'',false,$prettyurl);
     }
 
-    public function get{{$field.camelcase}}CleanUrl() {
+    public function get{{$field.camelcase}}CleanUrl($relative = false) {
       {{if $files_path != ''}}
         return $this->get{{$field.camelcase}}Url();
       {{else}}
-        return str_replace(DIRECTORY_SEPARATOR, '/', $this->{{$field.name}});
+
+        $url =  str_replace(DIRECTORY_SEPARATOR, '/', $this->{{$field.name}});
+
+        if($relative)
+        {
+            return $url;
+        }
+        else
+        {
+            $config = cms_utils::get_config();
+            return $config['root_url'] . $url;
+        }
       {{/if}}
     }
 

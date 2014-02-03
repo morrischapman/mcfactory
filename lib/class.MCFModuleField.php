@@ -489,6 +489,7 @@ class MCFModuleField extends MCFObject
         $result = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $result);
 
         // Soft way
+//        $result = str_replace("/", "No.", $result);
         $result = str_replace("#", "No.", $result);
         $result = str_replace("$", "Dollar", $result);
         $result = str_replace("%", "Percent", $result);
