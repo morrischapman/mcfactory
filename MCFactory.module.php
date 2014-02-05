@@ -45,7 +45,7 @@ class MCFactory extends CMSModule
 
     public function GetVersion()
     {
-        return '3.4.92';
+        return '3.4.94';
     }
 
     public function GetAuthor()
@@ -95,7 +95,10 @@ class MCFactory extends CMSModule
 
     public function GetDependencies()
     {
-        return array('CMSForms' => '1.10.14');
+        return array(
+            'CMSForms' => '1.10.14',
+            'MCFramework' => '0.0.1'
+        );
     }
 
     public function InstallPostMessage()
