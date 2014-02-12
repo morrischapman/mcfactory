@@ -45,7 +45,7 @@ class MCFactory extends CMSModule
 
     public function GetVersion()
     {
-        return '3.4.94';
+        return '3.4.96';
     }
 
     public function GetAuthor()
@@ -194,6 +194,9 @@ class MCFactory extends CMSModule
 //        $html .= '<script type="text/javascript" src="' . $this->loadResource('public/js/jquery-ui.min.js') . '"></script>';
 //        $html .= '<script type="text/javascript" src="' . $this->loadResource('public/js/jquery-1.10.2.min.js') . '"></script>';
 //        $html .= '<script type="text/javascript" src="' . $this->loadResource('public/js/jquery-ui.min.js') . '"></script>';
+
+//        $html .= '<script type="text/javascript" src="' . $this->loadResource('public/js/jquery-1.8.3.min.js') . '"></script>';
+//        $html .= '<script type="text/javascript" src="' . $this->loadResource('public/js/jquery-ui-1.9.2.custom.min.js') . '"></script>';
 
 //        $html .= '<script type="text/javascript" src="' . $config['root_url'] . '/lib/jquery/js/jquery.ui.nestedSortable-1.3.4.js"></script>';
 //        $html .= '<script type="text/javascript" src="' . $config['root_url'] . '/lib/jquery/js/jquery.json-2.3.min.js"></script>';

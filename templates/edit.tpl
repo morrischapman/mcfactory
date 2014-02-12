@@ -31,14 +31,14 @@
 
 	<ul>
 		{foreach from=$structure->getTabs() item=tab key=tab_key}
-		<li{if $active_fields_tab eq $tab_key} class="ui-tabs-selected ui-state-active"{/if}><a href="#struc-{$tab_key}">{$tab.name}</a></li>
+		<li{if $active_fields_tab eq $tab_key} class="ui-tabs-selected ui-state-active"{/if}><a href="{$request_uri}#struc-{$tab_key}">{$tab.name}</a></li>
 		{/foreach}
 	</ul>
-	
+
 	{foreach from=$structure->getTabs() item=tab key=tab_key}
 		<div id="struc-{$tab_key}">
 			<p style="text-align: right;"><button id="remove-tab-{$tab_key}">Remove this tab</button></p>
-			
+
 			<table style="width: 100%;" class="pagetable">
 			<thead>
 				<th colspan="2"></th>
@@ -52,7 +52,7 @@
 				<th></th>
 			</thead>
 			<tbody>
-			
+
 			{foreach from=$tab.fieldsets item=fieldset key=fieldset_key}
 			<tr style="background-color: #aaa;">
 				<td colspan="9">
@@ -63,12 +63,12 @@
 					<span class="remove-fieldset" name='{ldelim}"tab_key":"{$tab_key}", "remove_fieldset":"{$fieldset_key}"{rdelim}'>{$remove_icon}</span>
 				</td>
 			</tr>
-			
-			{* FIELDS *}
-			
+
+			 {*FIELDS *}
+
 			{if isset($fieldset.fields)}
 			<tbody id="sortable-{$tab_key}-{$fieldset_key}">
-			{foreach from=$fieldset.fields item=field}			
+			{foreach from=$fieldset.fields item=field}
 			<tr name="{$field.name}" class="{cycle values="row1,row2"}" onmouseover="this.className='{cycle values="row1,row2"}hover';" onmouseout="this.className='{cycle values="row1,row2"}';">
 				<td colspan="2"></td>
 				<td>{$field.label}</td>
@@ -78,15 +78,15 @@
 				<td>{$field.column}</td>
 				<td>{$field.filter}</td>
 				<td>{$field.frontend}</td>
-				<td style="text-align: right;" width="100">					
+				<td style="text-align: right;" width="100">
 					<span class="edit-field" name='{ldelim}"tab_key":"{$tab_key}", "fieldset_key":"{$fieldset_key}","label":"{$field.label}","name":"{$field.name}","type":"{$field.type}","options":"{$field.options}","column":"{$field.column}","filter":"{$field.filter}","frontend":"{$field.frontend}"{rdelim}'>{$edit_icon}</span>
 					<span class="remove-field" name='{ldelim}"tab_key":"{$tab_key}", "fieldset_key":"{$fieldset_key}","field":"{$field.name}"{rdelim}'>{$remove_icon}</span>
 				</td>
-			</tr>			
-			{/foreach}		
+			</tr>
+			{/foreach}
 			</tbody>
 			{/if}
-			
+
 			<tr style="background-color: #efefef;">
 				<td colspan="9"></td>
 				<td style="text-align: right;"><span class="add-field" name='{ldelim}"tab_key":"{$tab_key}", "fieldset_key":"{$fieldset_key}"{rdelim}'>Add field</span></td>
@@ -94,14 +94,12 @@
 			{/foreach}
 			</tbody>
 		</table>
-								
-		<p style="text-align: right;"><button class="add-fieldset" name="{$tab_key}">Add a fieldset</button></p>			
-		
+
+		<p style="text-align: right;"><button class="add-fieldset" name="{$tab_key}">Add a fieldset</button></p>
+
 		</div>
 	{/foreach}
 </div>
-
-
 
 <p>{* SPACER *}</p>
 
@@ -296,7 +294,7 @@
   //console.log(options_default);
   {literal}
   (function($) {
-		$( "#structure" ).tabs();
+		jQuery( "#structure" ).tabs();
 		$("#tab-form").dialog({
 			autoOpen: false,
 			height: 150,

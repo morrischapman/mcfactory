@@ -335,5 +335,9 @@ $this->smarty->assign('add_event', (isset($params['module_id'])) ? $this->Create
 
 $this->smarty->assign('templates_restore_url', (isset($params['module_id'])) ? $this->CreateLink($id, 'templates_restore', $returnid, '', array('module_id' => $params['module_id']), '', true, false) : 'First save the module core in order to manage templates');
 
+//var_dump($_SERVER);
+
+$smarty->assign('request_uri', $_SERVER['REQUEST_URI']);
+
 echo $this->ProcessTemplate('edit.tpl');
 
