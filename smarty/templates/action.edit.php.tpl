@@ -207,4 +207,6 @@ if ($form->isPosted()) {
 
 $this->smarty->assign('tab', isset($params['tab'])?$params['tab']:null);
 
+$smarty->assign('request_uri', $_SERVER['REQUEST_URI']);
+
 echo $this->ProcessTemplate('edit.tpl');

@@ -17,15 +17,15 @@
 	<div id="structure" style="margin-bottom: 7px;">
 	<ul>
 		{{foreach from=$structure->getTabs() item=tab key=tab_key}}
-		<li{{if isset($active_fields_tab)}}{{if $active_fields_tab eq $tab_key}} class="ui-tabs-selected ui-state-active"{{/if}}{{/if}}><a href="#struc-{{$tab_key}}">{{$tab.name}}</a></li>
+		<li{{if isset($active_fields_tab)}}{{if $active_fields_tab eq $tab_key}} class="ui-tabs-selected ui-state-active"{{/if}}{{/if}}><a href="{$request_uri}#struc-{{$tab_key}}">{{$tab.name}}</a></li>
 		{{/foreach}}
 		{foreach from=$submodules item=module}
-		<li{if $tab == $module.gname} class="ui-tabs-selected ui-state-active"{/if}><a href="#struc-{$module.gname}">{$module.name}</a></li>
+		<li{if $tab == $module.gname} class="ui-tabs-selected ui-state-active"{/if}><a href="{$request_uri}#struc-{$module.gname}">{$module.name}</a></li>
 		{/foreach}
 		{if $xtended_form != ''}
-		<li{if $tab == 'related'} class="ui-tabs-selected ui-state-active"{/if}><a href="#struc-related">Related items</a></li>
+		<li{if $tab == 'related'} class="ui-tabs-selected ui-state-active"{/if}><a href="{$request_uri}#struc-related">Related items</a></li>
     {/if}
-    <li><a href="#module---options">Options</a></li>
+    <li><a href="{$request_uri}#module---options">Options</a></li>
 	</ul>
 	{{foreach from=$structure->getTabs() item=tab key=tab_key}}
 		<div id="struc-{{$tab_key}}">
