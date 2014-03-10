@@ -45,7 +45,7 @@ class MCFactory extends CMSModule
 
     public function GetVersion()
     {
-        return '3.4.98';
+        return '3.4.102';
     }
 
     public function GetAuthor()
@@ -97,7 +97,7 @@ class MCFactory extends CMSModule
     {
         return array(
             'CMSForms' => '1.10.14',
-            'MCFramework' => '0.0.1'
+            'MCFramework' => '0.0.3'
         );
     }
 
@@ -509,7 +509,8 @@ class MCFactory extends CMSModule
         'ZW' => 'Zimbabwe',
 
         // TODO : CHECK FOR KOSOVO ISO CODE. IN THE MEANTIME, WE'LL USE THE CIA World Factbook code.
-        'KV' => 'Kosovo'
+        'KV' => 'Kosovo',
+        'ME' => 'Montenegro'
     );
 
 }

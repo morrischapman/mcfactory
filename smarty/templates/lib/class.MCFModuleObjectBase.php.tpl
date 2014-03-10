@@ -1356,13 +1356,9 @@ class {{$module->getModuleName()}}ObjectBase extends MCFModuleObject {
           {{elseif $field.form_type == 'select'}}
             if (!isset($options['include_custom'])) $options['include_custom'] = '&laquo; ' . cms_utils::get_module(self::MODULE_NAME)->lang('select_one') . ' &raquo;';
             {{if isset($field.foptions.feselector) && isset($field.foptions.module_name)}}
-              $c = new MCFCriteria();
-              $c->add('published', 1);
-              $options['values'] = {{$field.foptions.module_name}}Object::{{$field.foptions.feselector}}($c);
+              $options['values'] = {{$module->getModuleName()}}Object::{{$field.foptions.feselector}}();
             {{elseif isset($field.foptions.selector) && isset($field.foptions.module_name)}}
-              $c = new MCFCriteria();
-              $c->add('published', 1);
-              $options['values'] = {{$field.foptions.module_name}}Object::{{$field.foptions.selector}}($c);
+              $options['values'] = {{$module->getModuleName()}}Object::{{$field.foptions.selector}}();
             {{else}}
               $options['values'] = {{$module->getModuleName()}}Object::${{$field.name}}_options;
             {{/if}}

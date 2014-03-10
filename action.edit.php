@@ -294,7 +294,8 @@ $this->smarty->assign('remove_field_form', $remove_field_form);
 $this->smarty->assign('add_action_url', (isset($params['module_id'])) ? $this->CreateLink($id, 'manage_action', $returnid, '', array('module_id' => $params['module_id']), '', true, false) : 'First save the module core in order to add actions');
 $actions = (isset($params['module_id'])) ? MCFModuleAction::doSelect(array('where' => array('module_id' => $params['module_id']))) : array();
 foreach ($actions as $action) {
-    $action->edit_url = $this->CreateLink($id, 'manage_action', $returnid, cmsms()->get_variable('admintheme')->DisplayImage('icons/system/edit.gif', $this->Lang('edit'), '', '', 'systemicon'), array('module_action_id' => $action->getId()));
+    $action->edit_button = $this->CreateLink($id, 'manage_action', $returnid, cmsms()->get_variable('admintheme')->DisplayImage('icons/system/edit.gif', $this->Lang('edit'), '', '', 'systemicon'), array('module_action_id' => $action->getId()));
+    $action->edit_url = $this->CreateLink($id, 'manage_action', $returnid, '', array('module_action_id' => $action->getId()), '', true);
 
     $action->delete_url = $this->CreateLink($id, 'delete_action', $returnid, cmsms()->get_variable('admintheme')->DisplayImage('icons/system/delete.gif', $this->Lang('delete'), '', '', 'systemicon'), array('module_action_id' => $action->getId()));
 

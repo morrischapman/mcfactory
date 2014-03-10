@@ -142,9 +142,9 @@
 					<tbody id="actions">
 						{foreach from=$actions item=action}
 						<tr>
-							<td>{$action->name}</td>
+							<td><a href="{$action->edit_url}">{$action->name}</a></td>
 							<td>{$action->is_public_icon}</td>
-							<td>{$action->edit_url} {$action->delete_url}</td>
+							<td>{$action->edit_button} {$action->delete_url}</td>
 						</tr>
 						{/foreach}
 					</tbody>

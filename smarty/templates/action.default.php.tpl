@@ -146,18 +146,31 @@ if(isset($params['group_by']))
   }
 }
 
+if(!isset($params['pager_limit']) && isset($params['limit']))
+{
+    // COMPAT: DEPRECATED
+    $params['pager_limit'] = $params['limit'];
+}
+
+if(isset($params['pager_limit']))
+{
+    $pager = new MCFPager($this, $c, $params, $id, $returnid);
+    $pager_array = $pager->toArray();
+
+    $c->setLimit($pager->getLimit());
+    $c->setOffset($pager->getOffset());
+
+    $this->smarty->assign('pager', $pager_array);
+}
+
 if (isset($params['limit'])) {
-	if (isset($params['page'])) {
-		$page = $params['page'];
-		$c->setOffset(($page - 1) * $params['limit']);
-	} else {
-		$page = 1;
-	}
-	if(isset($params['offset']))
-	{
-		$c->setOffset($params['offset']);
-	}
-	$c->setLimit($params['limit']);
+
+    if(isset($params['offset']))
+    {
+        $c->setOffset($params['offset']);
+    }
+    $c->setLimit($params['limit']);
+
 }
 
 $items = {{$module->getModuleName()}}Object::doSelect($c);
@@ -171,33 +184,6 @@ if (($this->getPreference('show_parent', '0') == 1) && isset($params['get_tree']
 {
   $tree = {{$module->getModuleName()}}Object::buildTree($items);
   $this->smarty->assign('{{$module->getModuleName()|lower}}_tree', $tree); 
-}
-
-if (isset($params['limit'])) {
-	$c->setOffset(0);
-	$c->setLimit(0);
-	$total = {{$module->getModuleName()}}Object::doCount($c);
-	$totalpages = ceil($total / $params['limit']);
-	$page = $params['page'] ? $params['page'] : 1;
-	$pager = array();
-	$pager['has_to_paginate'] = $totalpages > 1;
-	$pager['current'] = $page;
-	$pager['total_pages'] = $totalpages;
-	$pager['total_results'] = $total;
-	$pager['pages'] = array();
-	
-	for ($i = 1; $i <= $totalpages; ++$i) {
-		$pager['pages'][] = ($i == $page) ? $i : $this->createLink($id, 'default', $returnid, $i, 
-		$this->ParamsForLink($params, array('page' => $i))
-		, '');
-	}
-	$pager['previous_page'] = ($page > 1) ? $this->createLink($id, 'default', $returnid, '', 
-	$this->ParamsForLink($params, array('page' => $page - 1))
-	, '', true, true) : false;
-	$pager['next_page'] = ($page < $totalpages) ? $this->createLink($id,'default', $returnid, '', 
-	$this->ParamsForLink($params, array('page' => $page + 1))
-	, '', true, true) : false;
-	$this->smarty->assign('pager', $pager);
 }
 
 $detailpage = $returnid;
@@ -297,7 +283,8 @@ if (isset($params['var'])) {
 		$newparams = $params;
 		unset($newparams['module']);
 		unset($newparams['action']);
-		unset($newparams['page']);
+//		unset($newparams['page']);
+		unset($newparams['pager_page']);
 		unset($newparams['returnid']);
 		foreach($newparams as $key => $value)
 		{
