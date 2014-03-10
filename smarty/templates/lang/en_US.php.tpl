@@ -112,6 +112,20 @@ you want to unsinstall this fine module?',
 
 <p>In the default template, you can get the params by calling {{literal}}{{{/literal}}${{$module->getModuleName()}}_params->params} where "->params" is an array of params.<p>
 
+<h4>Pager</h4>
+<p>You can create a pager for the list of your items. Use the pagination template for more details.</p>
+<p>Parameters you can use:</p>
+<dl>
+    <dt><em>pager_limit</em></dt>
+    <dd>Amount of entries per page</dd>
+    <dt><em>pager_size</em></dt>
+    <dd>Size of the pager (number of pages shown)</dd>
+    <dt><em>pager_page</em></dt>
+    <dd>Current page</dd>
+    <dt><em>pager_remember</em></dt>
+    <dd>Should the pager remember the last state?</dd>
+</dl>
+
 <h3>Detail</h3>
 <p>This is the detail action for an item. The default template is automatically generated and you can restore it to understand how to use it?</p>
 <h4>Params</h4>

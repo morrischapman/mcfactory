@@ -45,7 +45,7 @@ class MCFactory extends CMSModule
 
     public function GetVersion()
     {
-        return '3.4.102';
+        return '3.4.103';
     }
 
     public function GetAuthor()
