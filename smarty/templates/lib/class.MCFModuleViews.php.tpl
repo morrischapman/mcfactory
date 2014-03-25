@@ -315,6 +315,26 @@ public static function createForm($module,&$form,&$item,$params=array())
 
   		,'default_value' => isset($params['{{$field.name}}'])?$params['{{$field.name}}']:{{if isset($field.foptions.default_value)}}'{{$field.foptions.default_value}}'{{else}}null{{/if}}
   	));
+    {{elseif $field.form_type == 'i18n'}}
+      $class = array('chzn-select');
+  	  {{if isset($field.foptions.class)}}$class[] = '{{$field.foptions.class}}';{{/if}}
+
+  	  $form->getFieldset('{{$field.place.tab_key}}---{{$field.place.fieldset_key}}')->setWidget('{{$field.name}}', 'select', array(
+  		{{if isset($field.foptions.multiple) || isset($field.foptions.expanded)}}
+  		'values' => {{$field.select_options}},
+  		{{else}}
+  		'values' => array('' => '&laquo; ' . $module->lang('select_one') . ' &raquo;') + I18n::availableLanguages(),
+  		{{/if}}
+  		'label' => '{{$field.label}}',
+  		'object' => &$item,
+  		'class' => $class
+  		,'addtext' => ' style="min-width: 350px;"'
+
+  		{{if isset($field.foptions.size)}}, 'size' => {{$field.foptions.size}}{{/if}}
+  		{{if isset($field.foptions.expanded)}}, 'expanded' => true{{/if}}
+
+  		,'default_value' => isset($params['{{$field.name}}'])?$params['{{$field.name}}']:{{if isset($field.foptions.default_value)}}'{{$field.foptions.default_value}}'{{else}}null{{/if}}
+  	));
     {{elseif $field.form_type == 'checkbox'}}
     $form->getFieldset('{{$field.place.tab_key}}---{{$field.place.fieldset_key}}')->setWidget('{{$field.name}}', 'select', array(
       'values' => array('1' => '{{if isset($field.foptions.text)}}{{$field.foptions.text}}{{else}}{{$field.label}}{{/if}}'),

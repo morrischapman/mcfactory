@@ -269,6 +269,17 @@ class MCFModuleField extends MCFObject
             );
         }
 
+        if(class_exists('I18n'))
+        {
+            $field_types['i18n'] = array(
+                'type' => 'i18n',
+                'label' => 'Language (I18n)',
+                'column_type' => 'C(10)',
+                'form_type' => 'i18n',
+                'options' => true
+            );
+        }
+
         return $field_types;
     }
 
