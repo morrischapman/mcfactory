@@ -1,6 +1,7 @@
 <?php
 if (!cmsms()) exit;
 /** @var $this MCFactory */
+/** @var $smarty Smarty_CMS */
 
 if (!$this->CheckAccess()) {
     return $this->DisplayErrorPage();
@@ -10,48 +11,13 @@ if (!$this->CheckAccess()) {
 	Module Edition
 */
 
-// Tabs
 
-$tabs = array(
-    'main' => false,
-//	'fields' => false,
-    'actions' => false,
-    'extra_features' => false,
-    'logic' => false,
-    'options' => false
-);
-
-if (isset($params['active_tab'])) {
-    $tabs[$params['active_tab']] = true;
-}
-
-$this->smarty->assign('tab_headers', $this->StartTabHeaders() .
-
-    $this->SetTabHeader('main', $this->Lang('main'), $tabs['main']) .
-//	$this->SetTabHeader('fields',$this->Lang('fields'), $tabs['fields']).
-    $this->SetTabHeader('actions', $this->Lang('actions'), $tabs['actions']) .
-    $this->SetTabHeader('extra_features', $this->Lang('extra_features'), $tabs['extra_features']) .
-    $this->SetTabHeader('logic', $this->Lang('logic'), $tabs['logic']) .
-    $this->SetTabHeader('options', $this->Lang('options'), $tabs['options']) .
-
-    $this->EndTabHeaders() . $this->StartTabContent());
-
-$this->smarty->assign('start_main_tab', $this->StartTab('main'));
-//$this->smarty->assign('start_fields_tab',$this->StartTab('fields'));
-$this->smarty->assign('start_actions_tab', $this->StartTab('actions'));
-$this->smarty->assign('start_extra_features_tab', $this->StartTab('extra_features'));
-$this->smarty->assign('start_logic_tab', $this->StartTab('logic'));
-$this->smarty->assign('start_options_tab', $this->StartTab('options'));
-
-$this->smarty->assign('end_tab', $this->EndTab());
-$this->smarty->assign('tab_footers', $this->EndTabContent());
-
-// Logic
 
 if (isset($params['cancel'])) {
     $this->Redirect($id, 'defaultadmin', $returnid);
     exit;
 }
+
 
 if (isset($params['module_id']) && !empty($params['module_id'])) {
     $module = MCFModule::retrieveByPk($params['module_id']);
@@ -61,6 +27,21 @@ if (isset($params['module_id']) && !empty($params['module_id'])) {
     $module->setModuleFriendlyname('Module');
 }
 
+
+// Tabs
+
+$tabs = new MCFAdminTabs($this, $params);
+$tabs->addTabs(array(
+//    'main' => $this->Lang('main'),
+    'fields' => $this->Lang('fields'),
+    'filters' => $this->Lang('filters'),
+    'actions' => $this->Lang('actions'),
+    'logic' => $this->Lang('logic'),
+    'features' => $this->Lang('extra_features'),
+    'options' => $this->Lang('options'),
+));
+
+// Logic
 
 if (isset($params['move_up']) && is_array($params['move_up'])) {
     foreach ($params['move_up'] as $key => $value) {
@@ -339,6 +320,21 @@ $this->smarty->assign('templates_restore_url', (isset($params['module_id'])) ? $
 //var_dump($_SERVER);
 
 $smarty->assign('request_uri', $_SERVER['REQUEST_URI']);
+
+
+
+//
+$tabs->setTabContent('fields', $this->ProcessTemplate('admin.edit_fields.tpl'));
+$tabs->setTabContent('filters', $this->ProcessTemplate('admin.edit_filters.tpl'));
+$tabs->setTabContent('actions', $this->ProcessTemplate('admin.edit_actions.tpl'));
+$tabs->setTabContent('features', $this->ProcessTemplate('admin.edit_features.tpl'));
+$tabs->setTabContent('logic', $this->ProcessTemplate('admin.edit_logic.tpl'));
+$tabs->setTabContent('options', $this->ProcessTemplate('admin.edit_options.tpl'));
+
+
+
+$smarty->assign('module', $module);
+$smarty->assign('tabs', $tabs);
 
 echo $this->ProcessTemplate('edit.tpl');
 

@@ -97,7 +97,7 @@ class MCFactory extends CMSModule
     {
         return array(
             'CMSForms' => '1.10.14',
-            'MCFramework' => '0.0.3'
+            'MCFramework' => '0.0.5'
         );
     }
 

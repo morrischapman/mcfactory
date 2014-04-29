@@ -42,6 +42,7 @@ $lang = array(
 
     'main' => 'Main',
     'fields' => 'Fields',
+    'filters' => 'Filters',
     'actions' => 'Actions',
     'extra_features' => 'Extra features',
     'logic' => 'Custom logic',
