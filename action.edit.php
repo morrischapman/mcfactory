@@ -11,8 +11,6 @@ if (!$this->CheckAccess()) {
 	Module Edition
 */
 
-
-
 if (isset($params['cancel'])) {
     $this->Redirect($id, 'defaultadmin', $returnid);
     exit;
@@ -118,9 +116,6 @@ if($module->getId())
     $smarty->assign('module_design', $this->CreateLink($id, 'module_design', $returnid, null, array('module_id' => $module->getId()), null, true));
 }
 
-
-
-
 $field_types = $module->getFieldTypes();
 $field_types_with_options = array();
 foreach ($field_types as $field_type) {
@@ -167,7 +162,6 @@ $this->smarty->assign('input_admin_section', $this->CreateInputDropdown(
     $module->getAdminSection()
 ));
 
-
 $this->smarty->assign('input_module_friendlyname', $this->CreateInputText($id, 'module_friendlyname', $module->getModuleFriendlyname(), 50));
 $this->smarty->assign('input_title_label', $this->CreateInputText($id, 'title_label', $module->getTitleLabel(), 50));
 $this->smarty->assign('created_by', ($module->getCreatedBy() != '') ? cmsms()->GetUserOperations()->LoadUserByID($module->getCreatedBy())->username : null);
@@ -175,7 +169,9 @@ $this->smarty->assign('created_at', $module->getCreatedAt());
 $this->smarty->assign('updated_by', ($module->getUpdatedBy() != '') ? cmsms()->GetUserOperations()->LoadUserByID($module->getUpdatedBy())->username : null);
 $this->smarty->assign('updated_at', $module->getUpdatedAt());
 $this->smarty->assign('filters', $module->getFilters());
+
 $this->smarty->assign('module_logic', $this->CreateSyntaxArea($id, $module->getModuleLogic(), 'module_logic', 'pagebigtextarea', '', '', '', 90, 15));
+$this->smarty->assign('module_class_logic', $this->CreateSyntaxArea($id, $module->getModuleClassLogic(), 'module_class_logic', 'pagebigtextarea', '', '', '', 90, 15));
 
 
 
@@ -195,7 +191,6 @@ $this->smarty->assign('add_icon', cmsms()->get_variable('admintheme')->DisplayIm
 
 //$this->smarty->assign('up_icon',cmsms()->get_variable('admintheme')->DisplayImage('icons/system/up.gif','', '', '', 'systemicon'));
 //$this->smarty->assign('down_icon',cmsms()->get_variable('admintheme')->DisplayImage('icons/system/down.gif', $this->Lang('move_down'), '', '', 'systemicon'));
-
 
 // Active field tab
 $this->smarty->assign('active_fields_tab', (isset($params['active_fields_tab'])) ? $params['active_fields_tab'] : '');

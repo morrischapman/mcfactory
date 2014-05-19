@@ -29,6 +29,7 @@ $flds = array(
 	'structure X',
 	'filters X',
 	'module_logic	XL',
+	'module_class_logic	XL',
 	'templates_data XL',
 	'extra_features XL'
 );

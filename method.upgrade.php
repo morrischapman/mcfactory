@@ -85,6 +85,9 @@ switch (true) {
     case version_compare($oldversion, '3.4.92', '<'):
         MCFModuleField::createTable();
         MCFModuleAdminTemplate::createTable();
+    case version_compare($oldversion, '3.4.104', '<'):
+        $sql = $dict->AddColumnSQL(cms_db_prefix() . 'module_mcfactory_modules', 'module_class_logic XL');
+        $dict->ExecuteSQLArray($sql);
 }
 
 $this->Audit(0, $this->getFriendlyName(), $this->Lang('upgraded', $this->GetVersion()));

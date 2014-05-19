@@ -1,7 +1,7 @@
 <div class="pageoverflow2">
     <p class="pagetext2">Filters:</p>
     <div class="pageinput2">
-        <div id="filters">
+        <div id="filters_list">
             {foreach from=$filters key=i item=filter}
                 <p class="filters_item">
                     <label for="{$module_id}filters_{$i}_name">Name:</label> <input type="text" id="{$module_id}filters_{$i}_name" name="{$module_id}filters[{$i}][name]" value="{$filter.name}" size="30" />
@@ -40,7 +40,7 @@
                         return false;
                     })
                     .end()
-                    .appendTo("#filters");
+                    .appendTo("#filters_list");
             i++;
             return false;
         });

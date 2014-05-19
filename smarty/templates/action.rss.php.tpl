@@ -57,6 +57,32 @@ else
 	$c->setLimit(25);
 }
 
+if(isset($params['orderby']))
+{
+    $params['order_by'] = $params['orderby'];
+}
+
+if(isset($params['order_by']))
+{
+    $orders = explode(',', $params['order_by']);
+
+    foreach($orders as $order)
+    {
+        list($field, $direction) = explode(' ', $order);
+        // var_dump($field);
+        // var_dump($direction);
+        if(trim($direction) == 'DESC')
+        {
+            $c->addDescendingOrderByColumn(trim($field));
+        }
+        else
+        {
+            $c->addAscendingOrderByColumn(trim($field));
+        }
+
+    }
+}
+
 $c->addDescendingOrderByColumn('updated_at');
 $c->addDescendingOrderByColumn('id');
 

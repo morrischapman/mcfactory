@@ -134,6 +134,7 @@ class MCFModule
     protected $is_protected;
     protected $files_path;
     protected $module_logic;
+    protected $module_class_logic;
     protected $templates_data;
     protected $extra_features;
 
@@ -348,6 +349,11 @@ class MCFModule
         return $this->module_logic;
     }
 
+    public function getModuleClassLogic()
+    {
+        return $this->module_class_logic;
+    }
+
     public function getTemplatesData()
     {
         return $this->templates_data;
@@ -459,6 +465,11 @@ class MCFModule
     public function setModuleLogic($value)
     {
         $this->set('module_logic', $value);
+    }
+
+    public function setModuleClassLogic($value)
+    {
+        $this->set('module_class_logic', $value);
     }
 
     public function setTemplatesData($value)
@@ -774,6 +785,9 @@ class MCFModule
         if (isset($params['module_logic'])) {
             $this->setModuleLogic($params['module_logic']);
         }
+        if (isset($params['module_class_logic'])) {
+            $this->setModuleClassLogic($params['module_class_logic']);
+        }
         if (isset($params['templates_data'])) {
             $this->setTemplatesData($params['templates_data']);
         }
@@ -869,6 +883,7 @@ class MCFModule
 				is_protected = ?,
 				files_path = ?,
 				module_logic = ?,
+				module_class_logic = ?,
 				templates_data = ?,
 				admin_section = ?,
 				extra_features = ?
@@ -890,6 +905,7 @@ class MCFModule
             $this->getIsProtected(),
             $this->getFilesPath(),
             $this->getModuleLogic(),
+            $this->getModuleClassLogic(),
             $this->getTemplatesData(),
             $this->getAdminSection(),
             serialize($this->getExtraFeatures())
@@ -921,6 +937,7 @@ class MCFModule
 				is_protected = ?,
 				files_path = ?,
 				module_logic = ?,
+				module_class_logic = ?,
 				templates_data = ?,
 				admin_section = ?,
 				extra_features = ?
@@ -941,6 +958,7 @@ class MCFModule
             $this->getIsProtected(),
             $this->getFilesPath(),
             $this->getModuleLogic(),
+            $this->getModuleClassLogic(),
             $this->getTemplatesData(),
             $this->getAdminSection(),
             serialize($this->getExtraFeatures()),
