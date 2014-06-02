@@ -96,7 +96,7 @@ class MCFactory extends CMSModule
     public function GetDependencies()
     {
         return array(
-            'CMSForms' => '1.10.14',
+            'CMSForms' => '1.11.0',
             'MCFramework' => '0.0.5'
         );
     }

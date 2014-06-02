@@ -17,16 +17,8 @@ if (isset($params['show_user_items']) && MCFTools::IsModuleActive('CMSUsers')) {
 }
 
 
-{
-    {
-        $module->getModuleName()}
-}
-Object::buildFrontendFilters($c, $params);
-{
-    {
-        $module->getModuleName()}
-}
-Object::globalFrontendFilters($c, $params);
+{{$module->getModuleName()}}Object::buildFrontendFilters($c, $params);
+{{$module->getModuleName()}}Object::globalFrontendFilters($c, $params);
 
 
 if (isset($params['calendar']) && isset($params['start_date']) && isset($params['end_date'])) {
@@ -198,20 +190,14 @@ if (isset($params['limit'])) {
 
 }
 
-$items = {
-    {
-        $module->getModuleName()}
-}Object::doSelect($c);
+$items = {{$module->getModuleName()}}Object::doSelect($c);
 
 if (isset($params['reverse'])) {
     $items = array_reverse($items, true);
 }
 
 if (($this->getPreference('show_parent', '0') == 1) && isset($params['get_tree'])) {
-    $tree = {
-        {
-            $module->getModuleName()}
-    }Object::buildTree($items);
+    $tree = {{$module->getModuleName()}}Object::buildTree($items);
   $this->smarty->assign('{{$module->getModuleName()|lower}}_tree', $tree); 
 }
 
@@ -342,17 +328,13 @@ if (isset($params['var'])) {
     echo $this->ProcessTemplateFor('default', $params);
 
     return;
-    {
-        {
-            *
+    {{*
             // if (isset($params['template']) && $this->GetTemplate($params['template'])) {
             // 	echo $this->ProcessTemplateFromDatabase($params['template']);
             // } else {
             // 	echo $this->ProcessTemplateFromDatabase('display_list');
             // }
-            *
-        }
-    }
+            *}}
 }
 
 ?>
